@@ -1,10 +1,10 @@
-# Windmill Development Workflow Patterns
+# Windmill Development Patterns
 
-Comprehensive workflow patterns for developing with and on Windmill.
+Comprehensive patterns for developing scripts, flows, and apps with Windmill.
 
-## Setting Up Windmill Development
+## Setting Up Windmill Projects
 
-### For Users: Setting Up a Windmill Project
+### Setting Up a Windmill Project
 
 ```bash
 # 1. Initialize project
@@ -26,26 +26,6 @@ wmill sync pull
 wmill init --bind-profile
 ```
 
-### For Contributors: Setting Up Windmill Codebase
-
-```bash
-# 1. Clone repository
-git clone https://github.com/windmill-labs/windmill.git
-cd windmill
-
-# 2. Backend setup (Rust)
-cd backend
-# Follow @backend/rust-best-practices.mdc
-
-# 3. Frontend setup (Svelte)
-cd ../frontend
-# Follow @frontend/svelte5-best-practices.mdc
-
-# 4. CLI setup (TypeScript/Deno)
-cd ../cli
-deno task dev
-```
-
 ## Script Development Patterns
 
 ### Pattern 1: Simple Data Processing Script
@@ -53,6 +33,7 @@ deno task dev
 **Use case:** Transform data, call APIs, process files
 
 **Steps:**
+
 ```bash
 # 1. Ask user for folder location
 # Example: f/data/transformers/
@@ -90,6 +71,7 @@ wmill sync push
 **Use case:** Call third-party APIs with authentication
 
 **Steps:**
+
 ```bash
 # 1. Check available resource types
 wmill resource-type list --schema | grep -i stripe
@@ -99,27 +81,23 @@ wmill resource-type list --schema | grep -i stripe
 
 ```typescript
 // f/integrations/stripe/create_customer.ts
-import * as wmill from "windmill-client"
+import * as wmill from "windmill-client";
 
 type Stripe = {
-  api_key: string
-}
+  api_key: string;
+};
 
-export async function main(
-  stripe: Stripe,
-  email: string,
-  name: string
-) {
-  const response = await fetch('https://api.stripe.com/v1/customers', {
-    method: 'POST',
+export async function main(stripe: Stripe, email: string, name: string) {
+  const response = await fetch("https://api.stripe.com/v1/customers", {
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${stripe.api_key}`,
-      'Content-Type': 'application/x-www-form-urlencoded'
+      Authorization: `Bearer ${stripe.api_key}`,
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: new URLSearchParams({ email, name })
-  })
+    body: new URLSearchParams({ email, name }),
+  });
 
-  return await response.json()
+  return await response.json();
 }
 ```
 
@@ -144,27 +122,27 @@ wmill sync push
 
 ```typescript
 // f/utils/rate_limiter.ts
-import * as wmill from "windmill-client"
+import * as wmill from "windmill-client";
 
 export async function main(action: string) {
   // Get persistent state
-  let state = await wmill.getState() || { count: 0, last_reset: Date.now() }
+  let state = (await wmill.getState()) || { count: 0, last_reset: Date.now() };
 
   // Reset counter every hour
   if (Date.now() - state.last_reset > 3600000) {
-    state = { count: 0, last_reset: Date.now() }
+    state = { count: 0, last_reset: Date.now() };
   }
 
   // Check rate limit
   if (state.count >= 100) {
-    throw new Error("Rate limit exceeded")
+    throw new Error("Rate limit exceeded");
   }
 
   // Increment and save
-  state.count++
-  await wmill.setState(state)
+  state.count++;
+  await wmill.setState(state);
 
-  return { action, remaining: 100 - state.count }
+  return { action, remaining: 100 - state.count };
 }
 ```
 
@@ -174,10 +152,10 @@ export async function main(action: string) {
 
 ```typescript
 // f/workflows/orchestrator.ts
-import * as wmill from "windmill-client"
+import * as wmill from "windmill-client";
 
 export async function main(items: string[]) {
-  const results = []
+  const results = [];
 
   for (const item of items) {
     // Call existing script
@@ -185,12 +163,12 @@ export async function main(items: string[]) {
       "f/utils/processor",
       null,
       { input: item },
-      true  // verbose
-    )
-    results.push(result)
+      true // verbose
+    );
+    results.push(result);
   }
 
-  return results
+  return results;
 }
 ```
 
@@ -215,7 +193,7 @@ value:
     - id: validate_email
       value:
         type: rawscript
-        content: '!inline validate_email.ts'
+        content: "!inline validate_email.ts"
         language: bun
         input_transforms:
           email:
@@ -225,7 +203,7 @@ value:
     - id: create_user
       value:
         type: rawscript
-        content: '!inline create_user.ts'
+        content: "!inline create_user.ts"
         language: bun
         input_transforms:
           email:
@@ -262,10 +240,10 @@ schema:
 ```typescript
 // f/workflows/user_onboarding.flow/validate_email.ts
 export async function main(email: string) {
-  if (!email.includes('@')) {
-    throw new Error('Invalid email')
+  if (!email.includes("@")) {
+    throw new Error("Invalid email");
   }
-  return { email, valid: true }
+  return { email, valid: true };
 }
 ```
 
@@ -273,7 +251,7 @@ export async function main(email: string) {
 // f/workflows/user_onboarding.flow/create_user.ts
 export async function main(email: string, name: string) {
   // Create user logic
-  return { id: 123, email, name, created_at: new Date().toISOString() }
+  return { id: 123, email, name, created_at: new Date().toISOString() };
 }
 ```
 
@@ -299,7 +277,7 @@ value:
     - id: calculate_total
       value:
         type: rawscript
-        content: '!inline calculate_total.ts'
+        content: "!inline calculate_total.ts"
         language: bun
         input_transforms:
           items:
@@ -316,7 +294,7 @@ value:
               - id: request_approval
                 value:
                   type: rawscript
-                  content: '!inline request_approval.ts'
+                  content: "!inline request_approval.ts"
                   language: bun
                   suspend:
                     required_events: 1
@@ -329,7 +307,7 @@ value:
               - id: auto_approve
                 value:
                   type: rawscript
-                  content: '!inline auto_approve.ts'
+                  content: "!inline auto_approve.ts"
                   language: bun
                   input_transforms: {}
 
@@ -362,7 +340,7 @@ value:
     - id: fetch_items
       value:
         type: rawscript
-        content: '!inline fetch_items.ts'
+        content: "!inline fetch_items.ts"
         language: bun
         input_transforms: {}
 
@@ -374,12 +352,12 @@ value:
           expr: "results.fetch_items.items"
         skip_failures: true
         parallel: true
-        parallelism: 4  # Process 4 at a time
+        parallelism: 4 # Process 4 at a time
         modules:
           - id: process_item
             value:
               type: rawscript
-              content: '!inline process_item.ts'
+              content: "!inline process_item.ts"
               language: bun
               input_transforms:
                 item:
@@ -392,7 +370,7 @@ value:
     - id: aggregate_results
       value:
         type: rawscript
-        content: '!inline aggregate_results.ts'
+        content: "!inline aggregate_results.ts"
         language: bun
         input_transforms:
           results:
@@ -426,7 +404,7 @@ value:
       value:
         type: script
         path: "f/etl/transform_data"
-        continue_on_error: true  # Don't fail entire flow
+        continue_on_error: true # Don't fail entire flow
         input_transforms:
           data:
             type: javascript
@@ -439,19 +417,299 @@ value:
         input_transforms:
           data:
             type: javascript
-            expr: "results.transform || results.extract"  # Fallback to raw data
+            expr: "results.transform || results.extract" # Fallback to raw data
 
   failure_module:
     id: handle_error
     value:
       type: rawscript
-      content: '!inline handle_error.ts'
+      content: "!inline handle_error.ts"
       language: bun
       input_transforms: {}
 
 schema:
   type: object
   properties: {}
+```
+
+## App Development Patterns
+
+### Pattern 1: Simple Data Dashboard
+
+**Use case:** Display real-time data in tables and charts
+
+```bash
+# 1. Create app folder
+mkdir -p f/apps/sales_dashboard
+
+# 2. Create app.yaml
+cat > f/apps/sales_dashboard/app.yaml <<EOF
+summary: "Sales Dashboard"
+description: "Real-time sales metrics and reporting"
+policy:
+  execution_mode: "viewer"
+EOF
+
+# 3. Create app.json with data table
+# See APP_GUIDANCE.md for complete app.json structure
+
+# 4. Push to workspace
+wmill sync push
+```
+
+**App Structure:**
+
+- Background script to fetch data (auto-refresh every 30s)
+- Table component to display data
+- Chart component for visualization
+- Filters for date range
+
+### Pattern 2: CRUD Admin Panel
+
+**Use case:** Create, read, update, delete operations on database records
+
+**Components:**
+
+- Table with action buttons (Edit, Delete)
+- Modal form for creating new records
+- Detail panel for viewing/editing
+- Confirmation dialogs for destructive actions
+
+**Implementation:**
+
+```json
+{
+  "backgroundScripts": {
+    "list_records": {
+      "inlineScript": {
+        "content": "export async function main(db: RT.Postgresql) { /* query */ }",
+        "language": "bun"
+      },
+      "autoRefresh": true
+    }
+  },
+  "grid": [
+    {
+      "id": "records_table",
+      "data": {
+        "componentInput": {
+          "type": "evalv2",
+          "expr": "list_records.result"
+        },
+        "configuration": {
+          "actionButtons": [
+            {
+              "label": "Edit",
+              "runnable": {
+                /* edit script */
+              }
+            },
+            {
+              "label": "Delete",
+              "runnable": {
+                /* delete script */
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+```
+
+### Pattern 3: Form-Based Workflow
+
+**Use case:** Multi-step form submission with validation
+
+**Flow:**
+
+1. User fills form inputs
+2. Submit button triggers validation script
+3. If valid, process submission
+4. Show success/error message
+
+**Key Features:**
+
+- Input validation before submission
+- Loading state on submit button
+- Error message display
+- Success redirect
+
+### Pattern 4: Integration with External APIs
+
+**Use case:** Display data from third-party APIs
+
+**Pattern:**
+
+```typescript
+// Background script
+export async function main(api_key: RT.ApiKey) {
+  const response = await fetch("https://api.service.com/data", {
+    headers: { Authorization: `Bearer ${api_key.token}` },
+  });
+  return await response.json();
+}
+```
+
+**Features:**
+
+- Resource-based authentication
+- Error handling
+- Auto-refresh with configurable interval
+- Loading indicators
+
+## Docker Integration Patterns
+
+### Pattern 1: Containerized Python Script
+
+**Use case:** Run Python scripts with specific dependencies in Docker
+
+```dockerfile
+# f/scripts/ml_model.docker
+FROM python:3.11-slim
+
+RUN pip install scikit-learn pandas numpy
+
+COPY . /app
+WORKDIR /app
+
+CMD ["python", "model.py"]
+```
+
+```python
+# f/scripts/ml_model.py (alongside Dockerfile)
+def main(data: list):
+    import pandas as pd
+    from sklearn.linear_model import LinearRegression
+
+    # Process data
+    df = pd.DataFrame(data)
+    # Train model, make predictions
+    return {"predictions": [1, 2, 3]}
+```
+
+### Pattern 2: Docker-based API Integration
+
+**Use case:** Use specialized tools only available in containers
+
+```dockerfile
+FROM node:20-alpine
+
+RUN npm install -g @playwright/test
+
+COPY script.ts /app/
+WORKDIR /app
+
+CMD ["npx", "ts-node", "script.ts"]
+```
+
+## REST API Integration Patterns
+
+### Pattern 1: Simple REST API Call
+
+```yaml
+# f/integrations/fetch_users.rest
+method: GET
+url: https://api.example.com/users
+headers:
+  Authorization: Bearer ${api_key}
+  Content-Type: application/json
+query_params:
+  page: ${page}
+  limit: 100
+```
+
+### Pattern 2: POST with Body
+
+```yaml
+# f/integrations/create_user.rest
+method: POST
+url: https://api.example.com/users
+headers:
+  Authorization: Bearer ${api_key}
+  Content-Type: application/json
+body: |
+  {
+    "name": "${name}",
+    "email": "${email}",
+    "role": "user"
+  }
+```
+
+### Pattern 3: GraphQL Query
+
+```yaml
+# f/integrations/github_repos.rest
+method: POST
+url: https://api.github.com/graphql
+headers:
+  Authorization: Bearer ${github_token}
+  Content-Type: application/json
+body: |
+  {
+    "query": "query { viewer { repositories(first: 10) { nodes { name description } } } }"
+  }
+```
+
+## Ansible Integration Patterns
+
+### Pattern 1: Server Configuration
+
+```yaml
+# f/ops/configure_servers.ansible
+---
+- name: Configure web servers
+  hosts: webservers
+  become: yes
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Copy configuration
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      notify:
+        - restart nginx
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+```
+
+### Pattern 2: Database Backup
+
+```yaml
+# f/ops/backup_database.ansible
+---
+- name: Backup PostgreSQL database
+  hosts: database
+  tasks:
+    - name: Create backup directory
+      file:
+        path: /backups/{{ ansible_date_time.date }}
+        state: directory
+
+    - name: Dump database
+      postgresql_db:
+        name: "{{ db_name }}"
+        state: dump
+        target: /backups/{{ ansible_date_time.date }}/dump.sql
+      environment:
+        PGPASSWORD: "{{ db_password }}"
+
+    - name: Upload to S3
+      aws_s3:
+        bucket: backups
+        object: /db-backups/{{ ansible_date_time.date }}/dump.sql
+        src: /backups/{{ ansible_date_time.date }}/dump.sql
+        mode: put
 ```
 
 ## Testing Strategies
@@ -543,7 +801,7 @@ git merge develop
 wmill sync push  # Auto-pushes to prod workspace
 ```
 
-### Pattern 3: CI/CD Integration
+### Pattern 3: CI/CD Integration (GitHub Actions 2025)
 
 ```yaml
 # .github/workflows/deploy.yml
@@ -552,28 +810,153 @@ name: Deploy to Windmill
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  # Validation job for PRs
+  validate:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Deno
-        uses: denoland/setup-deno@v1
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
 
       - name: Install Windmill CLI
-        run: deno install -A https://deno.land/x/wmill/main.ts
+        run: deno install -A --global npm:windmill-cli
 
-      - name: Deploy to Windmill
-        env:
-          WMILL_TOKEN: ${{ secrets.WMILL_TOKEN }}
-          WMILL_WORKSPACE: ${{ secrets.WMILL_WORKSPACE }}
-          WMILL_BASE_URL: ${{ secrets.WMILL_BASE_URL }}
+      - name: Validate Scripts
         run: |
-          wmill sync push --token $WMILL_TOKEN \
-                         --workspace $WMILL_WORKSPACE \
-                         --base-url $WMILL_BASE_URL
+          wmill script generate-metadata
+          if [ $? -ne 0 ]; then
+            echo "Script validation failed"
+            exit 1
+          fi
+
+      - name: Validate Flows
+        run: |
+          wmill flow generate-locks --yes
+          if [ $? -ne 0 ]; then
+            echo "Flow validation failed"
+            exit 1
+          fi
+
+  # Deploy to staging
+  deploy-staging:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Install Windmill CLI
+        run: deno install -A --global npm:windmill-cli
+
+      - name: Deploy to Staging
+        env:
+          WMILL_TOKEN: ${{ secrets.WMILL_TOKEN_STAGING }}
+          WMILL_WORKSPACE: ${{ secrets.WMILL_WORKSPACE_STAGING }}
+          WMILL_BASE_URL: ${{ vars.WMILL_BASE_URL }}
+        run: |
+          wmill sync push \
+            --token "$WMILL_TOKEN" \
+            --workspace "$WMILL_WORKSPACE" \
+            --base-url "$WMILL_BASE_URL"
+
+  # Deploy to production
+  deploy-production:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: https://app.windmill.dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Install Windmill CLI
+        run: deno install -A --global npm:windmill-cli
+
+      - name: Generate metadata
+        run: |
+          wmill script generate-metadata
+          wmill flow generate-locks --yes
+
+      - name: Deploy to Production
+        env:
+          WMILL_TOKEN: ${{ secrets.WMILL_TOKEN_PROD }}
+          WMILL_WORKSPACE: ${{ secrets.WMILL_WORKSPACE_PROD }}
+          WMILL_BASE_URL: ${{ vars.WMILL_BASE_URL }}
+        run: |
+          wmill sync push \
+            --token "$WMILL_TOKEN" \
+            --workspace "$WMILL_WORKSPACE" \
+            --base-url "$WMILL_BASE_URL"
+
+      - name: Notify deployment
+        if: success()
+        run: |
+          echo "✅ Successfully deployed to production"
+          # Add Slack/Discord notification here
+```
+
+### Pattern 3b: GitLab CI/CD
+
+```yaml
+# .gitlab-ci.yml
+stages:
+  - validate
+  - deploy
+
+variables:
+  WMILL_BASE_URL: "https://app.windmill.dev"
+
+validate:
+  stage: validate
+  image: denoland/deno:latest
+  script:
+    - deno install -A --global npm:windmill-cli
+    - wmill script generate-metadata
+    - wmill flow generate-locks --yes
+  only:
+    - merge_requests
+
+deploy-staging:
+  stage: deploy
+  image: denoland/deno:latest
+  script:
+    - deno install -A --global npm:windmill-cli
+    - wmill sync push --token "$WMILL_TOKEN_STAGING" --workspace "$WMILL_WORKSPACE_STAGING" --base-url "$WMILL_BASE_URL"
+  environment:
+    name: staging
+  only:
+    - develop
+
+deploy-production:
+  stage: deploy
+  image: denoland/deno:latest
+  script:
+    - deno install -A --global npm:windmill-cli
+    - wmill sync push --token "$WMILL_TOKEN_PROD" --workspace "$WMILL_WORKSPACE_PROD" --base-url "$WMILL_BASE_URL"
+  environment:
+    name: production
+  only:
+    - main
+  when: manual
 ```
 
 ## Debugging Strategies
@@ -595,10 +978,10 @@ wmill script run f/folder/script --data '{}' --verbose
 
 ```typescript
 export async function main(param: string) {
-  console.log("Debug: param =", param)
+  console.log("Debug: param =", param);
   // ... rest of code
-  console.log("Debug: intermediate result =", result)
-  return result
+  console.log("Debug: intermediate result =", result);
+  return result;
 }
 ```
 
@@ -621,6 +1004,7 @@ wmill script run f/workflows/pipeline.flow/inline_script_0
 ### Common Issues
 
 **Issue: "Resource type not found"**
+
 ```bash
 # List available types
 wmill resource-type list --schema | grep -i <type>
@@ -631,6 +1015,7 @@ wmill resource-type list --schema | grep -i <type>
 ```
 
 **Issue: "Script metadata generation failed"**
+
 ```bash
 # Run from repository root
 cd /path/to/windmill/repo
@@ -641,6 +1026,7 @@ wmill script generate-metadata
 ```
 
 **Issue: "Flow locks not generating"**
+
 ```bash
 # Ensure inline paths are correct
 # content: '!inline path/to/script.ts'
@@ -750,11 +1136,10 @@ wmill sync push
 
 ```typescript
 export async function main(env: "dev" | "prod", query: string) {
-  const resourcePath = env === "prod"
-    ? "f/resources/prod_db"
-    : "f/resources/dev_db"
+  const resourcePath =
+    env === "prod" ? "f/resources/prod_db" : "f/resources/dev_db";
 
-  const db = await wmill.getResource(resourcePath)
+  const db = await wmill.getResource(resourcePath);
   // Use db connection...
 }
 ```
@@ -765,11 +1150,11 @@ export async function main(env: "dev" | "prod", query: string) {
 - id: approval_step
   value:
     type: rawscript
-    content: '!inline approval.ts'
+    content: "!inline approval.ts"
     language: bun
     suspend:
       required_events: 1
-      timeout: 86400  # 24 hours
+      timeout: 86400 # 24 hours
       resume_form:
         schema:
           type: object
@@ -787,7 +1172,7 @@ export async function main(env: "dev" | "prod", query: string) {
 ### S3 File Operations
 
 ```typescript
-import * as wmill from "windmill-client"
+import * as wmill from "windmill-client";
 
 export async function main() {
   // Write file to S3
@@ -795,14 +1180,11 @@ export async function main() {
     undefined,
     "file content",
     "f/resources/s3_bucket"
-  )
+  );
 
   // Read file from S3
-  const content = await wmill.loadS3File(
-    s3Object,
-    "f/resources/s3_bucket"
-  )
+  const content = await wmill.loadS3File(s3Object, "f/resources/s3_bucket");
 
-  return { s3Object, content }
+  return { s3Object, content };
 }
 ```

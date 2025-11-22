@@ -19,21 +19,21 @@ Every OpenFlow workflow must follow this root structure:
 summary: "Brief one-line description"
 description: "Optional detailed description"
 value:
-  modules: []  # Array of workflow steps
+  modules: [] # Array of workflow steps
   # Optional properties:
-  failure_module: {}  # Error handler
-  preprocessor_module: {}  # Runs before first step
-  same_worker: false  # Force same worker execution
-  concurrent_limit: 0  # Limit concurrent executions
-  concurrency_key: "string"  # Custom concurrency grouping
+  failure_module: {} # Error handler
+  preprocessor_module: {} # Runs before first step
+  same_worker: false # Force same worker execution
+  concurrent_limit: 0 # Limit concurrent executions
+  concurrency_key: "string" # Custom concurrency grouping
   concurrency_time_window_s: 0
   custom_debounce_key: "key"
   debounce_delay_s: 0
-  skip_expr: "javascript_expression"  # Skip workflow condition
-  cache_ttl: 0  # Cache results duration
-  priority: 0  # Execution priority
-  early_return: "javascript_expression"  # Early termination condition
-schema:  # JSON Schema for workflow inputs
+  skip_expr: "javascript_expression" # Skip workflow condition
+  cache_ttl: 0 # Cache results duration
+  priority: 0 # Execution priority
+  early_return: "javascript_expression" # Early termination condition
+schema: # JSON Schema for workflow inputs
   type: object
   properties: {}
   required: []
@@ -42,16 +42,17 @@ schema:  # JSON Schema for workflow inputs
 ## Module Types
 
 ### 1. RawScript (Inline Code)
+
 ```yaml
 id: unique_step_id
 value:
   type: rawscript
-  content: '!inline inline_script_1.inline_script.ts'
+  content: "!inline inline_script_1.inline_script.ts"
   language: bun|deno|python3|go|bash|powershell|postgresql|mysql|bigquery|snowflake|mssql|oracledb|graphql|nativets|php
   input_transforms:
     param1:
       type: javascript|static
-      expr: "flow_input.name"  # or for static: value: "fixed_value"
+      expr: "flow_input.name" # or for static: value: "fixed_value"
   # Optional properties:
   path: "optional/path"
   lock: "dependency_lock_content"
@@ -66,6 +67,7 @@ value:
 ```
 
 ### 2. PathScript (Reference to Existing Script)
+
 ```yaml
 id: step_id
 value:
@@ -82,6 +84,7 @@ value:
 ```
 
 ### 3. PathFlow (Sub-workflow)
+
 ```yaml
 id: step_id
 value:
@@ -94,16 +97,17 @@ value:
 ```
 
 ### 4. ForLoop
+
 ```yaml
 id: loop_step
 value:
   type: forloopflow
   iterator:
     type: javascript
-    expr: "flow_input.items"  # Must evaluate to array
+    expr: "flow_input.items" # Must evaluate to array
   skip_failures: true|false
-  parallel: true|false  # Run iterations in parallel
-  parallelism: 4  # Max parallel iterations (if parallel: true)
+  parallel: true|false # Run iterations in parallel
+  parallelism: 4 # Max parallel iterations (if parallel: true)
   modules:
     - id: loop_body_step
       value:
@@ -122,6 +126,7 @@ value:
 ```
 
 ### 5. WhileLoop
+
 ```yaml
 id: while_step
 value:
@@ -142,6 +147,7 @@ value:
 ```
 
 ### 6. Conditional Branch (BranchOne)
+
 ```yaml
 id: branch_step
 value:
@@ -165,7 +171,7 @@ value:
             content: "export async function main() { return 'branch2'; }"
             language: bun
             input_transforms: {}
-  default:  # Runs if no branch condition matches
+  default: # Runs if no branch condition matches
     - id: default_step
       value:
         type: rawscript
@@ -175,14 +181,15 @@ value:
 ```
 
 ### 7. Parallel Branches (BranchAll)
+
 ```yaml
 id: parallel_step
 value:
   type: branchall
-  parallel: true  # Run branches in parallel
+  parallel: true # Run branches in parallel
   branches:
     - summary: "Branch A"
-      skip_failure: false  # Continue if this branch fails
+      skip_failure: false # Continue if this branch fails
       modules:
         - id: branch_a_step
           value:
@@ -202,17 +209,20 @@ value:
 ```
 
 ### 8. Identity (Pass-through)
+
 ```yaml
 id: identity_step
 value:
   type: identity
-  flow: false  # Set to true if this represents a sub-flow
+  flow: false # Set to true if this represents a sub-flow
 ```
 
 ## Input Transforms & Data Flow
 
 ### JavaScript Expressions
+
 Reference data using these variables in `expr` fields:
+
 - `flow_input.property_name` - Access workflow inputs
 - `results.step_id` - Access outputs from previous steps
 - `results.step_id.property` - Access specific properties
@@ -220,24 +230,27 @@ Reference data using these variables in `expr` fields:
 - `flow_input.iter.index` - Current iteration index (in loops)
 
 ### Static Values
+
 ```yaml
 input_transforms:
   param_name:
     type: static
-    value: "fixed_string"  # Can be string, number, boolean, object, array
+    value: "fixed_string" # Can be string, number, boolean, object, array
 ```
 
 ### Resource References
+
 ```yaml
 input_transforms:
   database:
     type: static
-    value: "$res:f/folder/my_database"  # Reference to stored resource
+    value: "$res:f/folder/my_database" # Reference to stored resource
 ```
 
 ## Advanced Module Properties
 
 ### Error Handling & Control Flow
+
 ```yaml
 id: step_id
 value: # ... module definition
@@ -246,7 +259,7 @@ stop_after_if:
   expr: "results.step_id.should_stop"
   skip_if_stopped: true
   error_message: "Custom stop message"
-stop_after_all_iters_if:  # For loops only
+stop_after_all_iters_if: # For loops only
   expr: "results.step_id.should_stop_loop"
   skip_if_stopped: false
 skip_if:
@@ -254,21 +267,21 @@ skip_if:
 sleep:
   type: javascript
   expr: "flow_input.delay_seconds"
-continue_on_error: false  # Continue workflow if this step fails
-delete_after_use: false  # Clean up results after use
+continue_on_error: false # Continue workflow if this step fails
+delete_after_use: false # Clean up results after use
 
 # Execution control:
-cache_ttl: 3600  # Cache results for 1 hour
-timeout: 300  # Step timeout in seconds
-priority: 0  # Higher numbers = higher priority
+cache_ttl: 3600 # Cache results for 1 hour
+timeout: 300 # Step timeout in seconds
+priority: 0 # Higher numbers = higher priority
 mock:
   enabled: false
   return_value: "mocked_result"
 
 # Suspend/Approval:
 suspend:
-  required_events: 1  # Number of resume events needed
-  timeout: 86400  # Timeout in seconds
+  required_events: 1 # Number of resume events needed
+  timeout: 86400 # Timeout in seconds
   resume_form:
     schema:
       type: object
@@ -299,6 +312,7 @@ retry:
 ## Special Modules
 
 ### Failure Handler (Error Handler)
+
 ```yaml
 value:
   failure_module:
@@ -316,6 +330,7 @@ value:
 ```
 
 ### Preprocessor
+
 ```yaml
 value:
   preprocessor_module:
@@ -332,6 +347,7 @@ value:
 ```
 
 ## Schema Definition
+
 ```yaml
 schema:
   $schema: "https://json-schema.org/draft/2020-12/schema"
@@ -350,13 +366,13 @@ schema:
       maximum: 100
     database:
       type: object
-      format: "resource-postgresql"  # Resource type reference
+      format: "resource-postgresql" # Resource type reference
     items:
       type: array
       items:
         type: string
   required: ["name", "email"]
-  order: ["name", "email", "count"]  # UI field order
+  order: ["name", "email", "count"] # UI field order
 ```
 
 ## Best Practices
@@ -371,6 +387,7 @@ schema:
 8. **Schemas**: Always define input schemas for better UX and validation
 
 ## Example Complete Workflow
+
 ```yaml
 summary: "Process user data"
 description: "Validates user input, processes data, and sends notifications"
@@ -379,7 +396,7 @@ value:
     - id: validate_input
       value:
         type: rawscript
-        content: '!inline inline_script_0.inline_script.ts'
+        content: "!inline inline_script_0.inline_script.ts"
         # script at path inline_script_0.inline_script.ts will contain
         #   export async function main(email: string, name: string) {
         #     if (!email.includes('@')) throw new Error('Invalid email');
@@ -404,7 +421,7 @@ value:
     - id: send_notification
       value:
         type: rawscript
-        content: '!inline inline_script_1.inline_script.ts'
+        content: "!inline inline_script_1.inline_script.ts"
         # script at path inline_script_1.inline_script.ts will contain
         #   export async function main(processed_data: any) {
         #     console.log("Sending notification for:", processed_data.name);
