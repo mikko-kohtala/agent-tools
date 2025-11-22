@@ -19,6 +19,7 @@ Then install skills:
 ```bash
 claude plugin install tmux
 claude plugin install windmill
+claude plugin install skill-development
 ```
 
 ### Install Individual Skills Directly
@@ -26,6 +27,7 @@ claude plugin install windmill
 ```bash
 claude plugin install github:mikko-kohtala/agent-tools/skills/tmux
 claude plugin install github:mikko-kohtala/agent-tools/skills/windmill
+claude plugin install github:mikko-kohtala/agent-tools/skills/skill-development
 ```
 
 ## Skills
@@ -50,6 +52,21 @@ Assist with Windmill platform development. Guide agents working on Windmill code
 
 _Origin: Vibecoded_
 
+### skill-development (`skills/skill-development/`)
+
+Guide agents in creating effective skills for Claude Code plugins following progressive disclosure principles. Comprehensive documentation on skill anatomy, creation process, validation checklist, writing style requirements, and best practices for building modular, self-contained packages that extend Claude's capabilities.
+
+**Features:**
+
+- Six-step skill creation process (understanding, planning, structure, editing, validation, iteration)
+- Progressive disclosure design principles (metadata → SKILL.md → bundled resources)
+- Plugin-specific considerations and auto-discovery
+- Writing style requirements (imperative form, third-person descriptions)
+- Validation checklist and common mistakes to avoid
+- Examples from plugin-dev skills demonstrating best practices
+
+_Origin: [Anthropic](https://github.com/anthropics) - [claude-code](https://github.com/anthropics/claude-code)_
+
 ## Commands
 
 **Location:** `commands/`
@@ -63,8 +80,6 @@ Commands are reusable templates for common development tasks. This directory is 
 - [Claude Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) - Official documentation for creating agent skills
 - [Custom Skills Cookbook](https://github.com/anthropics/claude-cookbooks/tree/main/skills/custom_skills) - Examples and guides for building custom skills
 - https://skillsmp.com
-
-## Credits
-
-- **tmux skill:** [Armin Ronacher](https://github.com/mitsuhiko) - [agent-commands](https://github.com/mitsuhiko/agent-commands)
-- **windmill skill:** Vibecoded
+- https://www.aitmpl.com/skills
+- https://github.com/ComposioHQ/awesome-claude-skills
+- https://github.com/anthropics/skills
