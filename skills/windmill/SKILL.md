@@ -33,27 +33,27 @@ Use when:
 - Debugging Windmill development issues
 - Understanding Windmill workflows and best practices
 
-## Existing Guidance Files
+## Complete Guidance References
 
-**IMPORTANT**: The Windmill repository contains comprehensive guidance that is always active in Windmill projects:
+This skill includes comprehensive references for Windmill development:
 
-- **`cli/src/guidance/script_guidance.ts`** (438 lines): Complete script-writing guide covering:
-  - Language-specific conventions for all supported languages
+- **@SCRIPT_GUIDANCE.md**: Complete script-writing guide for all supported languages
+  - Language-specific conventions (bun, deno, python, go, bash, SQL, etc.)
   - Resource type patterns
   - Windmill client API reference (`wmill`)
-  - CLI commands reference
-  - Always active with `alwaysApply: true`
+  - Workflow steps for script creation
 
-- **`cli/src/guidance/flow_guidance.ts`** (434 lines): Complete OpenFlow specification covering:
+- **@WORKFLOW_GUIDANCE.md**: Complete OpenFlow specification
   - All module types (rawscript, script, flow, loops, branches)
   - Input transforms and data flow
   - Advanced properties (error handling, retry, suspend)
   - Complete workflow examples
-  - Always active with `alwaysApply: true`
 
-**Do NOT duplicate this guidance**. Reference these files and assume they're active. This skill focuses on higher-level workflows and orchestration.
+- **@WINDMILL_CLI.md**: Complete CLI command reference
 
-For detailed CLI reference, see @WINDMILL_CLI.md. For workflow patterns, see @WORKFLOWS.md.
+- **@WORKFLOWS.md**: Development workflow patterns and best practices
+
+**Note**: When users run `wmill init`, it creates `.cursor/rules/script.mdc` and `.cursor/rules/flow.mdc` files with similar guidance, along with a `CLAUDE.md` file. These files provide context-specific guidance in Windmill projects.
 
 ## Script Development Workflow
 
@@ -91,7 +91,7 @@ For detailed CLI reference, see @WINDMILL_CLI.md. For workflow patterns, see @WO
 
 ### Key Script Conventions
 
-From script_guidance.ts (reference full file for details):
+See @SCRIPT_GUIDANCE.md for complete reference. Key points:
 
 - Export single `main` function (async for bun/deno)
 - Don't call main function
@@ -116,7 +116,7 @@ await wmill.runScript(path, hash, args)
 await wmill.waitJob(jobId)
 ```
 
-See script_guidance.ts for complete API reference and all language-specific patterns.
+See @SCRIPT_GUIDANCE.md for complete API reference and all language-specific patterns.
 
 ## Flow Development Workflow
 
@@ -159,7 +159,7 @@ See script_guidance.ts for complete API reference and all language-specific patt
 
 ### Key Flow Conventions
 
-From flow_guidance.ts (reference full file for details):
+See @WORKFLOW_GUIDANCE.md for complete OpenFlow specification. Key points:
 
 **Flow Structure:**
 ```yaml
@@ -189,7 +189,7 @@ input_transforms:
     expr: "flow_input.name"  # or "results.previous_step"
 ```
 
-See flow_guidance.ts for complete OpenFlow specification with all module types and properties.
+See @WORKFLOW_GUIDANCE.md for complete OpenFlow specification with all module types and properties.
 
 ## Common CLI Sequences
 
@@ -341,7 +341,7 @@ See @WORKFLOWS.md for detailed workflow patterns and debugging strategies.
 
 - **Platform Docs**: https://www.windmill.dev/docs
 - **OpenFlow Standard**: https://www.openflow.dev
+- **Script Reference**: @SCRIPT_GUIDANCE.md
+- **Workflow Reference**: @WORKFLOW_GUIDANCE.md
 - **CLI Reference**: @WINDMILL_CLI.md
 - **Workflow Patterns**: @WORKFLOWS.md
-- **Script Guidance**: `cli/src/guidance/script_guidance.ts` (in Windmill repo)
-- **Flow Guidance**: `cli/src/guidance/flow_guidance.ts` (in Windmill repo)
