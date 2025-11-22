@@ -11,12 +11,7 @@ This is a curated collection of agent commands and skills for CLI-based AI codin
 ```
 .
 ├── skills/              # Active, production-ready skills
-│   └── tmux/           # Remote control tmux sessions (tools/ contains helper scripts)
 ├── skills-archive/     # Reference skills from other sources (not for direct use)
-│   ├── analyzing-financial-statements/
-│   ├── applying-brand-guidelines/
-│   ├── creating-financial-models/
-│   └── frontend-design/
 └── commands/           # Command templates (currently empty, ready for additions)
 ```
 
@@ -29,6 +24,7 @@ This is a curated collection of agent commands and skills for CLI-based AI codin
 ## Skill Structure
 
 Each skill follows this pattern:
+
 - `SKILL.md` - Required documentation with YAML frontmatter (name, description, license)
 - `tools/` - Optional directory for helper scripts (must be executable)
 - `REFERENCE.md` - Optional supporting documentation
@@ -36,12 +32,14 @@ Each skill follows this pattern:
 ### Active Skills
 
 **tmux** (`skills/tmux/`): Remote controls tmux sessions for interactive CLIs (Python, gdb, lldb). Uses isolated sockets under `${TMPDIR:-/tmp}/claude-tmux-sockets`. Helper scripts:
+
 - `find-sessions.sh` - List/filter tmux sessions
 - `wait-for-text.sh` - Poll panes for regex patterns with timeout
 
 ## Adding New Content
 
 When adding skills or commands:
+
 1. **Active skills**: Place in `skills/<skill-name>/` with SKILL.md and any tools
 2. **Reference/archived skills**: Place in `skills-archive/<skill-name>/`
 3. **Commands**: Place in `commands/` (structure TBD)
