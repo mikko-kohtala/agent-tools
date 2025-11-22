@@ -1,19 +1,10 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to CLI-based AI coding assistants when working with code in this repository.
 
 ## Repository Purpose
 
 This is a curated collection of agent commands and skills for CLI-based AI coding assistants (Claude Code, Codex CLI, Gemini CLI, etc.). The repository serves as a reference library of reusable capabilities that extend what AI agents can do.
-
-## Repository Structure
-
-```
-.
-├── skills/              # Active, production-ready skills
-├── skills-archive/     # Reference skills from other sources (not for direct use)
-└── commands/           # Command templates (currently empty, ready for additions)
-```
 
 ### Key Distinctions
 
