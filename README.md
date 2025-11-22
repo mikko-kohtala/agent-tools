@@ -8,22 +8,11 @@ This repository provides reusable skills and commands that extend the capabiliti
 
 ## Skills
 
-Skills are specialized capabilities that agents can use to interact with external tools. Each skill includes documentation and helper scripts.
+### tmux (`skills/tmux/`)
 
-### tmux
+Remote control tmux sessions for interactive CLIs (Python, gdb, lldb, etc.) by sending keystrokes and scraping pane output.
 
-**Location:** `skills/tmux/`
-
-Remote control tmux sessions for interactive CLIs (Python, gdb, lldb, etc.) by sending keystrokes and scraping pane output. This skill enables agents to:
-
-- Spawn and manage tmux sessions programmatically
-- Send commands to interactive shells and debuggers
-- Capture and parse output from running processes
-- Wait for specific patterns in terminal output
-
-Works on Linux and macOS with stock tmux.
-
-**Origin:** Based on the tmux skill by [Armin Ronacher](https://github.com/mitsuhiko) from [agent-commands](https://github.com/mitsuhiko/agent-commands).
+*Origin: [Armin Ronacher](https://github.com/mitsuhiko) - [agent-commands](https://github.com/mitsuhiko/agent-commands)*
 
 ## Commands
 
