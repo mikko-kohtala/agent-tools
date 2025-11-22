@@ -10,22 +10,22 @@ This repository provides reusable skills and commands that extend the capabiliti
 
 ### Add Marketplace from GitHub
 
-```
-/plugin marketplace add mikko-kohtala/agent-tools/main
+```bash
+claude plugin marketplace add mikko-kohtala/agent-tools
 ```
 
 Then install skills:
 
-```
-/plugins install tmux
-/plugins install windmill
+```bash
+claude plugin install tmux
+claude plugin install windmill
 ```
 
 ### Install Individual Skills Directly
 
-```
-/plugins install github:mikko-kohtala/agent-tools/main/skills/tmux
-/plugins install github:mikko-kohtala/agent-tools/main/skills/windmill
+```bash
+claude plugin install github:mikko-kohtala/agent-tools/skills/tmux
+claude plugin install github:mikko-kohtala/agent-tools/skills/windmill
 ```
 
 ## Skills
@@ -41,6 +41,7 @@ _Origin: [Armin Ronacher](https://github.com/mitsuhiko) - [agent-commands](https
 Assist with Windmill platform development. Guide agents working on Windmill codebase (backend Rust, frontend Svelte, CLI TypeScript) and helping users create Windmill projects. Provides workflows for scripts/flows creation, references existing guidance files, and scaffolding tools.
 
 **Features:**
+
 - Complete workflow patterns for script and flow development
 - CLI command reference
 - Interactive scaffolding tools (init-script.sh, init-flow.sh)
