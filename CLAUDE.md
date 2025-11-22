@@ -27,6 +27,13 @@ Each skill follows this pattern:
 - `find-sessions.sh` - List/filter tmux sessions
 - `wait-for-text.sh` - Poll panes for regex patterns with timeout
 
+**windmill** (`skills/windmill/`): Assists with Windmill platform development. Guides agents working on Windmill codebase (Rust backend, Svelte frontend, TypeScript CLI) and creating Windmill projects. Includes comprehensive workflow patterns, CLI reference, and scaffolding tools. Additional files:
+
+- `WINDMILL_CLI.md` - Complete CLI command reference
+- `WORKFLOWS.md` - Development workflow patterns and best practices
+- `tools/init-script.sh` - Interactive script scaffolding wizard
+- `tools/init-flow.sh` - Interactive flow scaffolding wizard
+
 ## Adding New Content
 
 When adding skills or commands:
