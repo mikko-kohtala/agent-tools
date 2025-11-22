@@ -48,19 +48,44 @@ Use this skill when the user:
 
 ### Creating a Script
 
-1. Ask user for folder location (e.g., `f/workflows/data_processing/`)
-2. Use `tools/init-script.sh` for interactive scaffolding (recommended), or create manually
-3. Run `wmill script generate-metadata` at repository root (generates .lock and .yaml)
-4. Test with `wmill script run <path>`
-5. Deploy with `wmill sync push`
+1. **Ask user for folder path** (e.g., `f/workflows/data_processing/` or `u/username/`)
+2. **Prefer CLI bootstrap** (modern approach):
+   ```bash
+   wmill script bootstrap f/my_folder/my_script python3
+   # Creates content file + .yaml metadata + .lock in one command
+   ```
+3. **Alternative: Helper tool** (if CLI unavailable or template desired):
+   ```bash
+   ./tools/init-script.sh  # Interactive wizard with language templates
+   ```
+4. **Or create manually**: Write script following language conventions (see SCRIPT_GUIDANCE.md)
+5. **Generate/update metadata** after manual edits:
+   ```bash
+   wmill script generate-metadata               # all changed scripts
+   wmill script generate-metadata f/path/script # single script
+   ```
+6. **Test**: `wmill script run f/folder/script --data '{"param": "value"}'`
+7. **Deploy**: `wmill sync push`
 
 ### Creating a Flow
 
-1. Ask user for folder location (must end with `.flow`)
-2. Use `tools/init-flow.sh` for interactive scaffolding (recommended), or create manually
-3. Run `wmill flow generate-locks --yes` at repository root
-4. Test with `wmill flow run <path>`
-5. Deploy with `wmill sync push`
+1. **Ask user for folder path** (must end with `.flow`, e.g., `f/workflows/pipeline.flow/`)
+2. **Prefer CLI bootstrap** (modern approach):
+   ```bash
+   wmill flow bootstrap f/workflows/my_flow
+   # Scaffolds flow.yaml with basic structure
+   ```
+3. **Alternative: Helper tool** (for template-based start):
+   ```bash
+   ./tools/init-flow.sh  # Interactive wizard with 6 flow templates
+   ```
+4. **Or create manually**: Create `flow.yaml` and inline scripts (see WORKFLOW_GUIDANCE.md)
+5. **Generate locks** for inline scripts:
+   ```bash
+   wmill flow generate-locks --yes  # Creates dependency locks
+   ```
+6. **Test**: `wmill flow run f/workflows/flow --data '{}'`
+7. **Deploy**: `wmill sync push`
 
 ### Creating an App
 
@@ -118,16 +143,20 @@ Read `QUICKREF.md` in this skill directory for:
 - Script conventions at-a-glance
 - Flow module types reference
 
-## Helper Tools
+## Helper Tools (Optional)
 
-### tools/init-script.sh
+These tools provide alternative scaffolding options when `wmill bootstrap` commands are unavailable or when you want opinionated templates.
 
-Interactive script scaffolding wizard that:
+### tools/init-script.sh (Alternative to CLI bootstrap)
 
-- Prompts for language selection (bun, deno, python3, go, bash, SQL variants, rust, php, docker, REST/GraphQL, ansible, etc.)
-- Asks for folder path
-- Generates script template with proper conventions
-- Automatically runs metadata generation
+Interactive script scaffolding wizard - useful when CLI bootstrap isn't available or you want language-specific templates.
+
+Features:
+
+- 18 language choices (bun, deno, python3, go, bash, SQL variants, rust, php, docker, REST/GraphQL, ansible, ruby, C#, java, nu shell)
+- Interactive prompts for folder path and script name
+- Pre-configured templates with best practices
+- Automatic metadata generation
 
 **Usage:**
 
@@ -136,14 +165,18 @@ cd /path/to/windmill/repo
 /path/to/skills/windmill/tools/init-script.sh
 ```
 
-### tools/init-flow.sh
+**Note:** Prefer `wmill script bootstrap` for modern CLI-based scaffolding.
 
-Interactive flow scaffolding wizard that:
+### tools/init-flow.sh (Alternative to CLI bootstrap)
 
-- Prompts for flow template selection (simple, API integration, data processing, etc.)
-- Asks for folder path (auto-adds .flow suffix)
-- Generates flow.yaml with inline scripts
-- Automatically runs lock generation
+Interactive flow scaffolding wizard with 6 production-ready templates.
+
+Features:
+
+- Templates: simple sequential, API integration, data processing, approval workflow, parallel processing, empty
+- Auto-generates flow.yaml with inline scripts
+- Proper OpenFlow structure
+- Automatic lock generation
 
 **Usage:**
 
@@ -152,13 +185,18 @@ cd /path/to/windmill/repo
 /path/to/skills/windmill/tools/init-flow.sh
 ```
 
+**Note:** Prefer `wmill flow bootstrap` for simple scaffolding; use this tool for template-based workflows.
+
 ### tools/init-app.sh
 
-Interactive app scaffolding wizard that:
+Interactive app scaffolding wizard (no CLI equivalent yet).
 
-- Prompts for app template selection
-- Asks for folder path
-- Generates app structure with components
+Features:
+
+- 6 app templates: dashboard, form, admin panel, real-time, master-detail, blank
+- Complete app.yaml and app.json generation
+- Production-ready component structures
+- Optional workspace push
 
 **Usage:**
 
@@ -231,6 +269,51 @@ wmill dev  # Watch files and auto-sync changes
 - Prefer `parallel: true` for independent operations
 - Add `failure_module` for critical workflows
 - Use meaningful step IDs for debugging
+
+## Agent Usage Guide
+
+### Quick Start for AI Agents
+
+When helping users with Windmill:
+
+1. **Clarify user goal**: script, flow, app, resource, or schedule?
+2. **Ask for folder path early** (e.g., `f/integrations/stripe/` or `u/username/`)
+3. **For scripts**: Use `wmill script bootstrap` OR scaffold with `init-script.sh`; then `wmill script generate-metadata`; test with `wmill script run`; deploy with `wmill sync push`
+4. **For flows**: Use `wmill flow bootstrap` OR scaffold with `init-flow.sh`; author inline scripts; run `wmill flow generate-locks --yes`; test with `wmill flow run`; deploy with sync
+5. **For apps**: Use `init-app.sh` for scaffolding; push with `wmill sync push`
+6. **Always confirm resource types** via `wmill resource-type list --schema` before assuming names
+7. **Encourage dev mode** (`wmill dev`) for iterative development
+
+### Conversation Example
+
+**User:** "Create a Stripe customer creation script"
+
+**Agent workflow:**
+
+1. Ask for target folder (e.g., `f/integrations/stripe/`)
+2. Check resource type existence: `wmill resource-type list --schema | grep -i stripe`
+3. Scaffold script with Stripe resource parameter (TypeScript with `RT.Stripe` or Python with `stripe` TypedDict)
+4. Generate metadata: `wmill script generate-metadata`
+5. Offer test command with sample data/resource reference
+6. Suggest: `wmill sync push` to deploy
+
+### Safety & Secrets
+
+- **Never hardcode credentials** - always use resources or secret variables
+- **Remind users** to store API keys as resources or secrets before usage
+- **Validate** that returned data excludes secrets
+- **Use resources** for database connections, API keys, OAuth tokens
+- **Check resource types** before scaffolding: `wmill resource-type list --schema`
+
+### Out of Scope
+
+This skill focuses on USING Windmill (creating scripts/flows/apps). It excludes:
+
+- Contributing to Windmill core platform (Rust backend, Svelte frontend, CLI internals)
+- Modifying Windmill source code
+- Windmill platform architecture
+
+For platform development questions, refer users to official Windmill contributor documentation.
 
 ## Troubleshooting
 

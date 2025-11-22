@@ -36,6 +36,21 @@ On Windmill, scripts are executed in isolated environments with specific convent
 - Import deno libraries normally
 - Libraries are installed automatically
 
+#### Native TypeScript / REST (`nativets`, `bunnative`)
+
+- Add a leading `//native` comment when required
+- Same conventions as bun; npm packages are supported
+- REST scripts are TypeScript/JavaScript that typically only use `fetch` and platform APIs
+- Use for lightweight scripts that don't need full runtime overhead
+
+```typescript
+//native
+export async function main(url: string) {
+  const response = await fetch(url);
+  return await response.json();
+}
+```
+
 #### TypeScript Resource Types & Windmill Client
 
 **Resource Types:**

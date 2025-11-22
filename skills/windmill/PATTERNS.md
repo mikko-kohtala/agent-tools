@@ -28,6 +28,8 @@ wmill init --bind-profile
 
 ## Script Development Patterns
 
+> **Quick start:** `wmill script bootstrap f/path/name <language>` creates the content, metadata, and lock files in one step.
+
 ### Pattern 1: Simple Data Processing Script
 
 **Use case:** Transform data, call APIs, process files
@@ -173,6 +175,8 @@ export async function main(items: string[]) {
 ```
 
 ## Flow Development Patterns
+
+> **Quick start:** `wmill flow bootstrap f/workflows/name` scaffolds `flow.yaml`; add inline scripts then run `wmill flow generate-locks --yes`.
 
 ### Pattern 1: Simple Sequential Flow
 
