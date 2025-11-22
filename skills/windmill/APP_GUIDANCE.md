@@ -27,7 +27,7 @@ Windmill apps are the third pillar of the platform (alongside Scripts and Flows)
 
 ### Folder Organization
 
-```
+```text
 f/apps/my_dashboard/
 ├── app.yaml              # App configuration
 └── app.json              # App definition (UI layout, components)
@@ -615,6 +615,6 @@ Share state between components:
 
 ## Additional Resources
 
-- **Platform Docs**: https://www.windmill.dev/docs/apps/app_editor
-- **Component Reference**: https://www.windmill.dev/docs/apps/components
-- **App Examples**: https://www.windmill.dev/docs/apps/examples
+- [Platform Docs](https://www.windmill.dev/docs/apps/app_editor)
+- [Component Reference](https://www.windmill.dev/docs/apps/components)
+- [App Examples](https://www.windmill.dev/docs/apps/examples)

@@ -412,6 +412,6 @@ wmill sync push
 
 ## Important URLs
 
-- **Docs**: https://www.windmill.dev/docs
-- **OpenFlow**: https://www.openflow.dev
-- **Hub**: https://hub.windmill.dev
+- **Docs**: [https://www.windmill.dev/docs](https://www.windmill.dev/docs)
+- **OpenFlow**: [https://www.openflow.dev](https://www.openflow.dev)
+- **Hub**: [https://hub.windmill.dev](https://hub.windmill.dev)

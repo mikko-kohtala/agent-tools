@@ -346,8 +346,8 @@ For detailed patterns and examples, read the PATTERNS.md file in this skill dire
 
 ## Additional Resources
 
-- **Platform Docs**: https://www.windmill.dev/docs
-- **OpenFlow Standard**: https://www.openflow.dev
+- [Platform Docs](https://www.windmill.dev/docs)
+- [OpenFlow Standard](https://www.openflow.dev)
 - **Script Reference**: Read SCRIPT_GUIDANCE.md
 - **Workflow Reference**: Read WORKFLOW_GUIDANCE.md
 - **App Reference**: Read APP_GUIDANCE.md
