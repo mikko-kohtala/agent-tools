@@ -25,9 +25,17 @@ echo "  6) PostgreSQL"
 echo "  7) PHP"
 echo "  8) Rust"
 echo "  9) PowerShell"
-echo " 10) Other (manual entry)"
+echo " 10) Ruby"
+echo " 11) C#"
+echo " 12) Java"
+echo " 13) MySQL"
+echo " 14) REST API"
+echo " 15) Docker"
+echo " 16) Ansible"
+echo " 17) Nu Shell"
+echo " 18) Other (manual entry)"
 echo
-read -p "Choice (1-10): " lang_choice
+read -p "Choice (1-18): " lang_choice
 
 case "$lang_choice" in
     1)
@@ -76,8 +84,48 @@ case "$lang_choice" in
         template="powershell"
         ;;
     10)
-        read -p "Enter language (e.g., mysql, java, csharp): " lang
-        read -p "Enter file extension (e.g., sql, java, cs): " ext
+        lang="ruby"
+        ext="rb"
+        template="ruby"
+        ;;
+    11)
+        lang="csharp"
+        ext="cs"
+        template="csharp"
+        ;;
+    12)
+        lang="java"
+        ext="java"
+        template="java"
+        ;;
+    13)
+        lang="mysql"
+        ext="sql"
+        template="mysql"
+        ;;
+    14)
+        lang="rest"
+        ext="yaml"
+        template="rest"
+        ;;
+    15)
+        lang="docker"
+        ext="dockerfile"
+        template="docker"
+        ;;
+    16)
+        lang="ansible"
+        ext="yaml"
+        template="ansible"
+        ;;
+    17)
+        lang="nushell"
+        ext="nu"
+        template="nushell"
+        ;;
+    18)
+        read -p "Enter language (e.g., graphql, snowflake): " lang
+        read -p "Enter file extension: " ext
         template="custom"
         ;;
     *)
@@ -294,10 +342,164 @@ Write-Host "Processing: $param1, $param2"
 EOF
         ;;
 
+    ruby)
+        cat > "$script_path" <<'EOF'
+def main(param1, param2 = 42)
+  # Your code here
+  puts "Processing: #{param1}, #{param2}"
+
+  {
+    success: true,
+    result: "Processed #{param1}"
+  }
+end
+EOF
+        ;;
+
+    csharp)
+        cat > "$script_path" <<'EOF'
+#r "nuget: Newtonsoft.Json, 13.0.1"
+
+using Newtonsoft.Json;
+
+public class Result
+{
+    public bool Success { get; set; }
+    public string Message { get; set; }
+}
+
+public class Script
+{
+    public static Result Main(string param1, int param2 = 42)
+    {
+        // Your code here
+        Console.WriteLine($"Processing: {param1}, {param2}");
+
+        return new Result
+        {
+            Success = true,
+            Message = $"Processed {param1}"
+        };
+    }
+}
+EOF
+        ;;
+
+    java)
+        cat > "$script_path" <<'EOF'
+//requirements://com.google.code.gson:gson:2.10.1
+
+import com.google.gson.Gson;
+import java.util.Map;
+import java.util.HashMap;
+
+public class Script {
+    public static Object main(String param1, Integer param2) {
+        if (param2 == null) param2 = 42;
+
+        // Your code here
+        System.out.println("Processing: " + param1 + ", " + param2);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        result.put("result", "Processed " + param1);
+
+        return result;
+    }
+}
+EOF
+        ;;
+
+    mysql)
+        cat > "$script_path" <<'EOF'
+-- ? param1 (text)
+-- ? param2 (int) = 42
+
+SELECT
+    true as success,
+    CONCAT('Processed ', ?) as result;
+EOF
+        ;;
+
+    rest)
+        cat > "$script_path" <<'EOF'
+# REST API configuration
+method: GET
+url: https://api.example.com/endpoint
+headers:
+  Content-Type: application/json
+  Authorization: Bearer ${token}
+query_params:
+  param1: ${param1}
+  param2: ${param2}
+body: |
+  {
+    "data": "value"
+  }
+EOF
+        ;;
+
+    docker)
+        cat > "$script_path" <<'EOF'
+# Dockerfile-based script
+# Base image
+FROM python:3.11-slim
+
+# Install dependencies
+RUN pip install requests
+
+# Copy script
+COPY . /app
+WORKDIR /app
+
+# Script content
+# Create a script.py file alongside this Dockerfile
+# Example:
+# def main(param1, param2=42):
+#     print(f"Processing: {param1}, {param2}")
+#     return {"success": True, "result": f"Processed {param1}"}
+
+CMD ["python", "script.py"]
+EOF
+        ;;
+
+    ansible)
+        cat > "$script_path" <<'EOF'
+---
+- name: Windmill Ansible Playbook
+  hosts: all
+  tasks:
+    - name: Example task
+      shell: |
+        echo "Processing: {{ param1 }}, {{ param2 | default(42) }}"
+      register: output
+
+    - name: Return result
+      debug:
+        msg:
+          success: true
+          result: "Processed {{ param1 }}"
+EOF
+        ;;
+
+    nushell)
+        cat > "$script_path" <<'EOF'
+def main [param1: string, param2: int = 42] {
+  # Your code here
+  print $"Processing: ($param1), ($param2)"
+
+  {
+    success: true
+    result: $"Processed ($param1)"
+  }
+}
+EOF
+        ;;
+
     custom)
         cat > "$script_path" <<EOF
 # Custom script template for $lang
-# See cli/src/guidance/script_guidance.ts for language-specific conventions
+# See SCRIPT_GUIDANCE.md for language-specific conventions
 
 def main():
     # Your code here

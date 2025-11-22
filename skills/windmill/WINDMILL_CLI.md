@@ -20,6 +20,7 @@ All commands support these global options:
 Bootstrap a new Windmill project with a `wmill.yaml` configuration file
 
 **Options:**
+
 - `--use-default` - Use default settings without checking backend
 - `--use-backend` - Use backend git-sync settings if available
 - `--repository <repo>` - Specify repository path when using backend settings (e.g., `u/user/repo`)
@@ -27,6 +28,7 @@ Bootstrap a new Windmill project with a `wmill.yaml` configuration file
 - `--no-bind-profile` - Skip workspace profile binding prompt
 
 **Usage:**
+
 ```bash
 wmill init                    # Interactive setup
 wmill init --use-default      # Skip backend check
@@ -34,6 +36,7 @@ wmill init --bind-profile     # Auto-bind workspace to branch
 ```
 
 **Creates:**
+
 - `wmill.yaml` - Project configuration file
 - `wmill-lock.yaml` - Lock file for tracking state
 - `.cursor/rules/script.mdc` - Script guidance for Cursor IDE
@@ -49,6 +52,7 @@ wmill version
 ```
 
 Shows:
+
 - Current CLI version
 - Checks for available updates
 - Backend version (if workspace configured)
@@ -68,12 +72,14 @@ wmill upgrade
 Manage Windmill workspaces
 
 **Subcommands:**
+
 - `add` - Add a new workspace configuration
 - `list` - List all configured workspaces
 - `switch <workspace>` - Switch to a specific workspace
 - `remove <workspace>` - Remove a workspace configuration
 
 **Usage:**
+
 ```bash
 wmill workspace add           # Interactive workspace setup
 wmill workspace list          # Show all workspaces
@@ -86,10 +92,12 @@ wmill workspace remove dev    # Remove 'dev' workspace
 User management operations
 
 **Subcommands:**
+
 - `list` - List users in the workspace
 - `whoami` - Show current user information
 
 **Usage:**
+
 ```bash
 wmill user whoami            # Check authentication
 wmill user list              # List workspace users
@@ -102,6 +110,7 @@ wmill user list              # List workspace users
 Manage Windmill scripts
 
 **Subcommands:**
+
 - `push <file>` - Push a script file to the workspace
 - `list` - List all scripts in the workspace
 - `show <path>` - Show script details
@@ -109,6 +118,7 @@ Manage Windmill scripts
 - `generate-metadata <file>` - Generate metadata for a script
 
 **Usage:**
+
 ```bash
 wmill script generate-metadata   # Generate .lock and .yaml files
 wmill script push f/utils/helper.ts
@@ -124,6 +134,7 @@ wmill script show f/utils/helper
 Manage Windmill flows
 
 **Subcommands:**
+
 - `push <path>` - Push a flow to the workspace
 - `list` - List all flows
 - `show <path>` - Show flow details
@@ -131,6 +142,7 @@ Manage Windmill flows
 - `generate-locks` - Generate dependency locks for flow inline scripts
 
 **Usage:**
+
 ```bash
 wmill flow generate-locks --yes  # Generate locks for all inline scripts
 wmill flow push f/workflows/data_pipeline.flow
@@ -146,11 +158,13 @@ wmill flow show f/workflows/data_pipeline
 Manage Windmill applications
 
 **Subcommands:**
+
 - `push <path>` - Push an app to the workspace
 - `list` - List all apps
 - `show <path>` - Show app details
 
 **Usage:**
+
 ```bash
 wmill app push f/dashboards/analytics
 wmill app list
@@ -164,11 +178,13 @@ wmill app show f/dashboards/analytics
 Manage resources (database connections, API keys, credentials, etc.)
 
 **Subcommands:**
+
 - `list` - List all resources
 - `push <file>` - Push a resource definition
 - `show <path>` - Show resource details
 
 **Usage:**
+
 ```bash
 wmill resource list
 wmill resource push f/resources/postgres_db.yaml
@@ -180,9 +196,11 @@ wmill resource show f/resources/postgres_db
 Manage custom resource types
 
 **Subcommands:**
+
 - Operations for defining and managing custom resource schemas
 
 **Usage:**
+
 ```bash
 wmill resource-type list --schema    # List all available resource types
 ```
@@ -194,11 +212,13 @@ wmill resource-type list --schema    # List all available resource types
 Manage workspace variables and secrets
 
 **Subcommands:**
+
 - `list` - List all variables
 - `push <file>` - Push a variable definition
 - `show <path>` - Show variable details
 
 **Usage:**
+
 ```bash
 wmill variable list
 wmill variable push f/config/api_key.yaml
@@ -212,10 +232,12 @@ wmill variable show f/config/api_key
 Manage scheduled jobs
 
 **Subcommands:**
+
 - `list` - List all schedules
 - `push <file>` - Push a schedule definition
 
 **Usage:**
+
 ```bash
 wmill schedule list
 wmill schedule push f/schedules/daily_backup.yaml
@@ -236,22 +258,26 @@ Operations for managing webhooks and event-based triggers.
 Synchronize local files with Windmill workspace
 
 **Subcommands:**
+
 - `pull` - Download resources from workspace to local files
 - `push` - Upload local files to workspace
 
 **Usage:**
+
 ```bash
 wmill sync pull              # Download from workspace
 wmill sync push              # Upload to workspace
 ```
 
 **Features:**
+
 - Bidirectional sync with conflict resolution
 - Works with `wmill.yaml` configuration
 - Supports selective sync
 - Shows diffs with `--show-diffs`
 
 **Workflow:**
+
 ```bash
 # Initial setup
 wmill init
@@ -273,10 +299,12 @@ wmill sync pull
 Manage git synchronization settings
 
 **Operations:**
+
 - Configure automatic git sync for the workspace
 - Pull/push git sync configurations
 
 **Usage:**
+
 ```bash
 wmill gitsync-settings pull
 wmill gitsync-settings push
@@ -293,12 +321,14 @@ wmill dev
 ```
 
 **Features:**
+
 - Watches local files for changes
 - Automatically syncs changes to workspace
 - Provides real-time feedback during development
 - Hot reload for rapid iteration
 
 **Recommended for:**
+
 - Active development sessions
 - Testing changes quickly
 - Iterative workflow development
@@ -308,9 +338,11 @@ wmill dev
 Interact with Windmill Hub
 
 **Subcommands:**
+
 - `pull` - Pull resources from the public Windmill Hub
 
 **Usage:**
+
 ```bash
 wmill hub pull <resource-path>
 ```
@@ -324,6 +356,7 @@ Access community-shared scripts, flows, and resource types from the public Windm
 Manage Windmill instance settings (Enterprise)
 
 **Operations:**
+
 - Configure instance-level settings
 - Manage global configurations
 
@@ -332,6 +365,7 @@ Manage Windmill instance settings (Enterprise)
 Manage worker groups for job execution
 
 **Operations:**
+
 - Configure worker pool settings
 - Manage worker group assignments
 
@@ -340,6 +374,7 @@ Manage worker groups for job execution
 Manage individual workers
 
 **Operations:**
+
 - Monitor worker instances
 - Configure worker settings
 
@@ -348,6 +383,7 @@ Manage individual workers
 Manage job queues
 
 **Operations:**
+
 - Monitor job execution queues
 - Configure queue settings
 
@@ -358,6 +394,7 @@ Manage job queues
 Manage workspace folders and organization
 
 **Operations:**
+
 - Create and organize folders
 - Manage folder permissions
 
@@ -366,12 +403,14 @@ Manage workspace folders and organization
 Generate shell completion scripts
 
 **Supported shells:**
+
 - bash
 - zsh
 - fish
 - PowerShell
 
 **Usage:**
+
 ```bash
 wmill completions bash > ~/.bash_completions/wmill
 ```
@@ -379,6 +418,7 @@ wmill completions bash > ~/.bash_completions/wmill
 ## Common Command Sequences
 
 ### Initial Project Setup
+
 ```bash
 wmill init                    # Bootstrap project
 wmill workspace add           # Configure workspace
@@ -386,6 +426,7 @@ wmill sync pull               # Pull existing resources
 ```
 
 ### Script Development
+
 ```bash
 # 1. Create script file
 # 2. Generate metadata
@@ -397,6 +438,7 @@ wmill sync push
 ```
 
 ### Flow Development
+
 ```bash
 # 1. Create flow.yaml and inline scripts
 # 2. Generate locks
@@ -408,6 +450,7 @@ wmill sync push
 ```
 
 ### Development Loop
+
 ```bash
 # Option 1: Manual sync
 # Make changes...
@@ -424,6 +467,7 @@ wmill dev
 ### wmill.yaml
 
 Project configuration file created by `wmill init`. Contains:
+
 - Default sync options
 - Git branch mappings
 - Workspace bindings

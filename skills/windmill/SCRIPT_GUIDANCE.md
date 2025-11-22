@@ -36,6 +36,21 @@ On Windmill, scripts are executed in isolated environments with specific convent
 - Import deno libraries normally
 - Libraries are installed automatically
 
+#### Native TypeScript / REST (`nativets`, `bunnative`)
+
+- Add a leading `//native` comment when required
+- Same conventions as bun; npm packages are supported
+- REST scripts are TypeScript/JavaScript that typically only use `fetch` and platform APIs
+- Use for lightweight scripts that don't need full runtime overhead
+
+```typescript
+//native
+export async function main(url: string) {
+  const response = await fetch(url);
+  return await response.json();
+}
+```
+
 #### TypeScript Resource Types & Windmill Client
 
 **Resource Types:**
@@ -232,8 +247,67 @@ param($ParamName1, $ParamName2 = "default value", [{type}]$ParamName3, ...)
 - Dependencies: `//requirements://groupId:artifactId:version` at top
 - Method signature: `public static Object main(parameter types...)`
 
+### Ruby (`ruby`)
+
+- Script contains at least one function called `main`
+- Libraries are installed automatically
+- Do not call the main function
+
+```ruby
+def main(param1, param2)
+  # Your code here
+  return { result: "value" }
+end
+```
+
+**Resource Types:**
+If you need credentials, add a parameter to `main` with the corresponding resource type (lowercase).
+
+### Docker (`docker`)
+
+- Containerized script execution
+- Uses a Dockerfile or container image
+- Script runs inside the specified container
+- Follow language conventions for the script inside the container
+
+### REST API (`rest`)
+
+- HTTP REST API calls
+- Configure HTTP method, URL, headers, body
+- Authentication via resources
+
+### Ansible (`ansible`)
+
+- Ansible playbook YAML format
+- Define tasks, hosts, and variables
+- Use resources for SSH credentials and inventory
+
+```yaml
+---
+- name: Example playbook
+  hosts: all
+  tasks:
+    - name: Execute task
+      shell: echo "Hello"
+```
+
+### Nu Shell (`nushell`)
+
+- Nu shell scripting language
+- Structured data pipeline approach
+- Arguments via parameters
+
+```nu
+def main [param1: string, param2: int] {
+  # Your code here
+  $param1 | str length
+}
+```
+
 ## Supported Languages
 
-`bunnative`, `nativets`, `bun`, `deno`, `python3`, `php`, `rust`, `go`, `bash`, `postgresql`, `mysql`, `bigquery`, `snowflake`, `mssql`, `graphql`, `powershell`, `csharp`, `java`
+`bunnative`, `nativets`, `bun`, `deno`, `python3`, `php`, `rust`, `go`, `bash`, `postgresql`, `mysql`, `bigquery`, `snowflake`, `mssql`, `graphql`, `powershell`, `csharp`, `java`, `ruby`, `docker`, `rest`, `ansible`, `nushell`
+
+**TypeScript Variants:** `bun` (fastest), `deno`, `nativets` (Node.js-based), `bunnative`
 
 Always follow the specific conventions for the language being used and include only necessary dependencies and resource types.
