@@ -10,6 +10,7 @@ This skill ensures all generated documents adhere to corporate brand standards f
 ## Brand Identity
 
 ### Company: Acme Corporation
+
 **Tagline**: "Innovation Through Excellence"
 **Industry**: Technology Solutions
 
@@ -18,11 +19,13 @@ This skill ensures all generated documents adhere to corporate brand standards f
 ### Color Palette
 
 **Primary Colors**:
+
 - **Acme Blue**: #0066CC (RGB: 0, 102, 204) - Headers, primary buttons
 - **Acme Navy**: #003366 (RGB: 0, 51, 102) - Text, accents
 - **White**: #FFFFFF - Backgrounds, reverse text
 
 **Secondary Colors**:
+
 - **Success Green**: #28A745 (RGB: 40, 167, 69) - Positive metrics
 - **Warning Amber**: #FFC107 (RGB: 255, 193, 7) - Cautions
 - **Error Red**: #DC3545 (RGB: 220, 53, 69) - Negative values
@@ -33,6 +36,7 @@ This skill ensures all generated documents adhere to corporate brand standards f
 **Primary Font Family**: Segoe UI, system-ui, -apple-system, sans-serif
 
 **Font Hierarchy**:
+
 - **H1**: 32pt, Bold, Acme Blue
 - **H2**: 24pt, Semibold, Acme Navy
 - **H3**: 18pt, Semibold, Acme Navy
@@ -51,12 +55,14 @@ This skill ensures all generated documents adhere to corporate brand standards f
 ### PowerPoint Presentations
 
 **Slide Templates**:
+
 1. **Title Slide**: Company logo, presentation title, date, presenter
 2. **Section Divider**: Section title with blue background
 3. **Content Slide**: Title bar with blue background, white content area
 4. **Data Slide**: For charts/graphs, maintain color palette
 
 **Layout Rules**:
+
 - Margins: 0.5 inches all sides
 - Title position: Top 15% of slide
 - Bullet indentation: 0.25 inches per level
@@ -66,6 +72,7 @@ This skill ensures all generated documents adhere to corporate brand standards f
 ### Excel Spreadsheets
 
 **Formatting Standards**:
+
 - **Headers**: Row 1, Bold, White text on Acme Blue background
 - **Subheaders**: Bold, Acme Navy text
 - **Data cells**: Regular, Acme Navy text
@@ -73,6 +80,7 @@ This skill ensures all generated documents adhere to corporate brand standards f
 - **Alternating rows**: Light gray (#F8F9FA) for readability
 
 **Chart Defaults**:
+
 - Primary series: Acme Blue
 - Secondary series: Success Green
 - Gridlines: Neutral Gray, 0.5pt
@@ -81,6 +89,7 @@ This skill ensures all generated documents adhere to corporate brand standards f
 ### PDF Documents
 
 **Page Layout**:
+
 - **Header**: Company logo left, document title center, page number right
 - **Footer**: Copyright notice left, date center, classification right
 - **Margins**: 1 inch all sides
@@ -88,6 +97,7 @@ This skill ensures all generated documents adhere to corporate brand standards f
 - **Paragraph spacing**: 12pt after
 
 **Section Formatting**:
+
 - Main headings: Acme Blue, 16pt, bold
 - Subheadings: Acme Navy, 14pt, semibold
 - Body text: Acme Navy, 11pt, regular
@@ -104,11 +114,13 @@ This skill ensures all generated documents adhere to corporate brand standards f
 ### Standard Phrases
 
 **Opening Statements**:
+
 - "At Acme Corporation, we..."
 - "Our commitment to innovation..."
 - "Delivering excellence through..."
 
 **Closing Statements**:
+
 - "Thank you for your continued partnership."
 - "We look forward to serving your needs."
 - "Together, we achieve excellence."
@@ -116,12 +128,14 @@ This skill ensures all generated documents adhere to corporate brand standards f
 ### Data Presentation
 
 **Numbers**:
+
 - Use comma separators for thousands
 - Currency: $X,XXX.XX format
 - Percentages: XX.X% (one decimal)
 - Dates: Month DD, YYYY
 
 **Tables**:
+
 - Headers in brand blue
 - Alternating row colors
 - Right-align numbers
@@ -132,6 +146,7 @@ This skill ensures all generated documents adhere to corporate brand standards f
 ### Before Finalizing
 
 Always ensure:
+
 1. Logo is properly placed and sized
 2. All colors match brand palette exactly
 3. Fonts are consistent throughout
@@ -142,6 +157,7 @@ Always ensure:
 ### Prohibited Elements
 
 Never use:
+
 - Clip art or stock photos without approval
 - Comic Sans, Papyrus, or decorative fonts
 - Rainbow colors or gradients
@@ -151,6 +167,7 @@ Never use:
 ## Application Instructions
 
 When creating any document:
+
 1. Start with brand colors and fonts
 2. Apply appropriate template structure
 3. Include logo on first page/slide

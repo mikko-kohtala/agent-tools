@@ -1,4 +1,4 @@
-# CLAUDE.md
+# Agent Tools
 
 This file provides guidance to CLI-based AI coding assistants when working with code in this repository.
 
