@@ -9,24 +9,27 @@ Generate and edit images using Google's Gemini API. The environment variable `GE
 
 ## Available Models
 
-| Model | Alias | Resolution | Best For |
-|-------|-------|------------|----------|
-| `gemini-2.5-flash-image` | Nano Banana | 1024px | Speed, high-volume tasks |
-| `gemini-3-pro-image-preview` | Nano Banana Pro | Up to 4K | Professional assets, complex instructions, text rendering |
+| Model                        | Alias           | Resolution | Best For                                                  |
+| ---------------------------- | --------------- | ---------- | --------------------------------------------------------- |
+| `gemini-2.5-flash-image`     | Nano Banana     | 1024px     | Speed, high-volume tasks                                  |
+| `gemini-3-pro-image-preview` | Nano Banana Pro | Up to 4K   | Professional assets, complex instructions, text rendering |
 
 ## Quick Start Scripts
 
 ### Text-to-Image
+
 ```bash
 python scripts/generate_image.py "A cat wearing a wizard hat" output.png
 ```
 
 ### Edit Existing Image
+
 ```bash
 python scripts/edit_image.py input.png "Add a rainbow in the background" output.png
 ```
 
 ### Multi-Turn Chat (Iterative Refinement)
+
 ```bash
 python scripts/multi_turn_chat.py
 ```
@@ -111,24 +114,33 @@ response = chat.send_message("Make the text bolder and add a blue gradient")
 ## Prompting Best Practices
 
 ### Photorealistic Scenes
+
 Include camera details: lens type, lighting, angle, mood.
+
 > "A photorealistic close-up portrait, 85mm lens, soft golden hour light, shallow depth of field"
 
 ### Stylized Art
+
 Specify style explicitly:
+
 > "A kawaii-style sticker of a happy red panda, bold outlines, cel-shading, white background"
 
 ### Text in Images
+
 Be explicit about font style and placement. Use `gemini-3-pro-image-preview` for best results:
+
 > "Create a logo with text 'Daily Grind' in clean sans-serif, black and white, coffee bean motif"
 
 ### Product Mockups
+
 Describe lighting setup and surface:
+
 > "Studio-lit product photo on polished concrete, three-point softbox setup, 45-degree angle"
 
 ## Advanced Features (Pro Model Only)
 
 ### Google Search Grounding
+
 Generate images based on real-time data:
 
 ```python
@@ -143,6 +155,7 @@ response = client.models.generate_content(
 ```
 
 ### Multiple Reference Images (Up to 14)
+
 Combine elements from multiple sources:
 
 ```python
