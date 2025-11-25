@@ -1,5 +1,5 @@
 {
-  "name": "windmill-skill",
+  "name": "windmill-plugin",
   "description": "Assist with Windmill platform development. Guide agents working on Windmill codebase and creating Windmill projects",
   "version": "1.0.0",
   "author": {
@@ -7,5 +7,14 @@
   },
   "repository": "https://github.com/mikko-kohtala/agent-tools",
   "license": "MIT",
-  "keywords": ["windmill", "workflow", "automation", "platform", "openflow", "rust", "svelte", "typescript"]
+  "keywords": [
+    "windmill",
+    "workflow",
+    "automation",
+    "platform",
+    "openflow",
+    "rust",
+    "svelte",
+    "typescript"
+  ]
 }

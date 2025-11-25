@@ -1,10 +1,10 @@
 # Agent Tools
 
-A curated collection of agent commands and skills for various CLI-based AI coding assistants, including Claude Code, Codex CLI, Gemini CLI, and other agent-based development tools.
+A curated collection of plugins for Claude Code and other CLI-based AI coding assistants.
 
 ## About
 
-This repository provides reusable skills and commands that extend the capabilities of AI coding assistants. Skills enable agents to interact with external tools and services, while commands provide templates for common development workflows.
+This repository provides reusable plugins that extend the capabilities of AI coding assistants. Each plugin can contain skills, commands, agents, and hooks.
 
 ## Installation
 
@@ -14,44 +14,42 @@ This repository provides reusable skills and commands that extend the capabiliti
 claude plugin marketplace add mikko-kohtala/agent-tools
 ```
 
-Then install skills:
+Then install plugins:
 
 ```bash
-claude plugin install tmux-skill
-claude plugin install windmill-skill
-claude plugin install playwright-skill
+claude plugin install playwright-plugin
+claude plugin install tmux-plugin
+claude plugin install windmill-plugin
 ```
 
-### Install Individual Skills Directly
+### Install Individual Plugins Directly
 
 ```bash
-claude plugin install github:mikko-kohtala/agent-tools/skills/tmux-skill
-claude plugin install github:mikko-kohtala/agent-tools/skills/windmill-skill
-claude plugin install github:mikko-kohtala/agent-tools/skills/playwright-skill
+claude plugin install github:mikko-kohtala/agent-tools/plugins/playwright-plugin
+claude plugin install github:mikko-kohtala/agent-tools/plugins/tmux-plugin
+claude plugin install github:mikko-kohtala/agent-tools/plugins/windmill-plugin
 ```
 
-## Skills
+## Plugins
 
-| Skill | Description | Origin |
-|-------|-------------|--------|
-| [tmux-skill](skills/tmux-skill/) | Remote control tmux sessions for interactive CLIs | [Armin Ronacher](https://github.com/mitsuhiko/agent-commands) |
-| [windmill-skill](skills/windmill-skill/) | Windmill platform development assistance | Vibecoded |
-| [playwright-skill](skills/playwright-skill/) | Browser automation with Playwright | [lackeyjb](https://github.com/lackeyjb/playwright-skill) |
-| [gemini-imagegen-skill](skills/gemini-imagegen-skill/) | Gemini API image generation | [EveryInc](https://github.com/EveryInc/every-marketplace/tree/main/plugins/compounding-engineering/skills/gemini-imagegen) |
-| [skill-development-skill](skills/skill-development-skill/) | Guide for creating Claude Code skills | [Anthropic](https://github.com/anthropics/claude-code) |
-
-## Commands
-
-**Location:** `commands/`
-
-Commands are reusable templates for common development tasks. This directory is currently empty but ready for future command additions.
+| Plugin | Skills | Commands | Agents | Hooks | Origin |
+|--------|--------|----------|--------|-------|--------|
+| [playwright-plugin](plugins/playwright-plugin/) | playwright-skill | - | - | - | [lackeyjb](https://github.com/lackeyjb/playwright-skill) |
+| [tmux-plugin](plugins/tmux-plugin/) | tmux-skill | - | - | - | [Armin Ronacher](https://github.com/mitsuhiko/agent-commands) |
+| [windmill-plugin](plugins/windmill-plugin/) | windmill-skill | - | - | - | Vibecoded |
+| [gemini-imagegen-plugin](plugins/gemini-imagegen-plugin/) | gemini-imagegen-skill | - | - | - | [EveryInc](https://github.com/EveryInc/every-marketplace) |
+| [skill-development-plugin](plugins/skill-development-plugin/) | skill-development-skill | - | - | - | [Anthropic](https://github.com/anthropics/claude-code) |
 
 ## Reference Links
 
-### Agent Skills Documentation
+### Claude Code Documentation
 
-- [Claude Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) - Official documentation for creating agent skills
-- [Custom Skills Cookbook](https://github.com/anthropics/claude-cookbooks/tree/main/skills/custom_skills) - Examples and guides for building custom skills
+- [Plugins Overview](https://code.claude.com/docs/en/plugins.md) - Official plugin documentation
+- [Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) - Official skill documentation
+- [Custom Skills Cookbook](https://github.com/anthropics/claude-cookbooks/tree/main/skills/custom_skills) - Examples and guides
+
+### Plugin Marketplaces
+
 - https://skillsmp.com
 - https://www.aitmpl.com/skills
 - https://github.com/ComposioHQ/awesome-claude-skills

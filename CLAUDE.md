@@ -4,53 +4,61 @@ This file provides guidance to CLI-based AI coding assistants when working with 
 
 ## Repository Purpose
 
-This is a curated collection of agent commands and skills for CLI-based AI coding assistants (Claude Code, Codex CLI, Gemini CLI, etc.). The repository serves as a reference library of reusable capabilities that extend what AI agents can do.
+This is a curated collection of plugins for CLI-based AI coding assistants (Claude Code, Codex CLI, Gemini CLI, etc.). The repository serves as a marketplace of reusable plugins that extend what AI agents can do.
 
-### Key Distinctions
+## Repository Structure
 
-- **`skills/`**: Active skills intended for use in this or other codebases. Currently contains the tmux skill for programmatic terminal control.
-- **`skills-archive/`**: Reference implementations from external sources (Claude Cookbooks, claude-agent-desktop). These serve as examples and inspiration but are not primary skills of this repository.
-- **`commands/`**: Placeholder for future command templates (reusable workflow patterns).
+```
+<repo-root>/
+├── .claude-plugin/
+│   └── marketplace.json       # Marketplace index listing all plugins
+├── plugins/
+│   └── <plugin-name>/
+│       ├── .claude-plugin/
+│       │   └── plugin.json    # Plugin metadata
+│       ├── commands/          # Custom slash commands (optional)
+│       ├── agents/            # Custom agents (optional)
+│       ├── skills/            # Agent skills
+│       │   └── <skill-name>/
+│       │       └── SKILL.md
+│       └── hooks/             # Event handlers (optional)
+└── skills-archive/            # Reference implementations (not active)
+```
 
-## Skill Structure
+## Plugin Structure
 
-Each skill follows this pattern:
+Each plugin follows Claude Code's plugin specification:
 
-- `SKILL.md` - Required documentation with YAML frontmatter (name, description, license)
-- `tools/` - Optional directory for helper scripts (must be executable)
-- `REFERENCE.md` - Optional supporting documentation
+- `.claude-plugin/plugin.json` - Required plugin metadata
+- `skills/<skill-name>/SKILL.md` - Skill documentation with YAML frontmatter
+- `commands/` - Optional slash command definitions
+- `agents/` - Optional custom agent definitions
+- `hooks/` - Optional event handlers
 
-### Active Skills
+## Active Plugins
 
-**tmux-skill** (`skills/tmux-skill/`): Remote controls tmux sessions for interactive CLIs (Python, gdb, lldb). Uses isolated sockets under `${TMPDIR:-/tmp}/claude-tmux-sockets`. Helper scripts:
+| Plugin | Description |
+|--------|-------------|
+| playwright-plugin | Browser automation with Playwright |
+| tmux-plugin | Remote control tmux sessions for interactive CLIs |
+| windmill-plugin | Windmill platform development assistance |
+| gemini-imagegen-plugin | Image generation via Gemini API |
+| skill-development-plugin | Guide for creating Claude Code skills |
 
-- `find-sessions.sh` - List/filter tmux sessions
-- `wait-for-text.sh` - Poll panes for regex patterns with timeout
+## Adding New Plugins
 
-**windmill-skill** (`skills/windmill-skill/`): Assists with Windmill platform development. Guides agents working on Windmill codebase (Rust backend, Svelte frontend, TypeScript CLI) and creating Windmill projects. Includes complete language references, workflow patterns, CLI reference, and scaffolding tools. Files:
-
-- `SCRIPT_GUIDANCE.md` - Complete script-writing guide for all supported languages
-- `WORKFLOW_GUIDANCE.md` - Complete OpenFlow workflow specification
-- `WINDMILL_CLI.md` - Complete CLI command reference
-- `WORKFLOWS.md` - Development workflow patterns and best practices
-- `tools/init-script.sh` - Interactive script scaffolding wizard
-- `tools/init-flow.sh` - Interactive flow scaffolding wizard
-
-## Adding New Content
-
-When adding skills or commands:
-
-1. **Active skills**: Place in `skills/<skill-name>/` with SKILL.md and any tools
-2. **Reference/archived skills**: Place in `skills-archive/<skill-name>/`
-3. **Commands**: Place in `commands/` (structure TBD)
-4. Update README.md with description and credit original author
-5. Ensure helper scripts in `tools/` are executable (`chmod +x`)
+1. Create `plugins/<plugin-name>/` directory
+2. Add `.claude-plugin/plugin.json` with plugin metadata
+3. Create `skills/<skill-name>/SKILL.md` for any skills
+4. Optionally add `commands/`, `agents/`, `hooks/` directories
+5. Update `.claude-plugin/marketplace.json` to list the new plugin
+6. Update README.md with plugin description and origin
 
 ## Important References
 
-- [Claude Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) - Official skill creation docs
-- [Custom Skills Cookbook](https://github.com/anthropics/claude-cookbooks/tree/main/skills/custom_skills) - Examples and guides
+- [Plugins Overview](https://code.claude.com/docs/en/plugins.md) - Official plugin docs
+- [Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) - Official skill docs
 
 ## Credits
 
-All skills maintain attribution to original authors. See README.md for current credits. When copying skills, preserve attribution and exclude LICENSE files (individual skills may have different licenses noted in SKILL.md frontmatter).
+All plugins maintain attribution to original authors. See README.md for current credits.
