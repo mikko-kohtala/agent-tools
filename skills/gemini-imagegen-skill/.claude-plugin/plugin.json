@@ -1,5 +1,5 @@
 {
-  "name": "gemini-imagegen",
+  "name": "gemini-imagegen-skill",
   "description": "Generate and edit images using the Gemini API. Supports text-to-image, image editing, multi-turn refinement, and composition.",
   "version": "1.0.0",
   "author": {

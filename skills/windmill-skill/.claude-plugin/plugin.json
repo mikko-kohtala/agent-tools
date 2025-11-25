@@ -1,5 +1,5 @@
 {
-  "name": "windmill",
+  "name": "windmill-skill",
   "description": "Assist with Windmill platform development. Guide agents working on Windmill codebase and creating Windmill projects",
   "version": "1.0.0",
   "author": {
