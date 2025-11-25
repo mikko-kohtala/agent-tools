@@ -6,7 +6,7 @@
   },
   "plugins": [
     {
-      "name": "tmux-skill",
+      "name": "tmux",
       "source": "./skills/tmux-skill",
       "description": "Remote control tmux sessions for interactive CLIs (python, gdb, etc.) by sending keystrokes and scraping pane output",
       "version": "1.0.0",
@@ -17,7 +17,7 @@
       "keywords": ["tmux", "terminal", "interactive", "cli", "debugging"]
     },
     {
-      "name": "windmill-skill",
+      "name": "windmill",
       "source": "./skills/windmill-skill",
       "description": "Assist with Windmill platform development. Guide agents working on Windmill codebase and creating Windmill projects",
       "version": "1.0.0",
@@ -28,7 +28,7 @@
       "keywords": ["windmill", "workflow", "automation", "platform", "openflow"]
     },
     {
-      "name": "playwright-skill",
+      "name": "playwright",
       "source": "./skills/playwright-skill",
       "description": "Browser automation with Playwright. Claude autonomously writes and executes custom automation for testing pages, validating UX, and any browser task.",
       "version": "4.0.2",
@@ -39,7 +39,7 @@
       "keywords": ["playwright", "browser-automation", "testing", "e2e", "web-testing"]
     },
     {
-      "name": "gemini-imagegen-skill",
+      "name": "gemini-imagegen",
       "source": "./skills/gemini-imagegen-skill",
       "description": "Generate and edit images using the Gemini API. Supports text-to-image, image editing, multi-turn refinement, and composition.",
       "version": "1.0.0",
@@ -50,7 +50,7 @@
       "keywords": ["gemini", "image-generation", "ai-images", "google", "editing"]
     },
     {
-      "name": "skill-development-skill",
+      "name": "skill-development",
       "source": "./skills/skill-development-skill",
       "description": "Guide for creating effective Claude Code skills following progressive disclosure principles",
       "version": "1.0.0",
