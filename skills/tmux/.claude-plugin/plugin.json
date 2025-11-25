@@ -9,6 +9,5 @@
   "homepage": "https://github.com/mitsuhiko/agent-commands",
   "repository": "https://github.com/mikko-kohtala/agent-tools",
   "license": "Vibecoded",
-  "keywords": ["tmux", "terminal", "interactive", "cli", "debugging"],
-  "category": "development"
+  "keywords": ["tmux", "terminal", "interactive", "cli", "debugging"]
 }

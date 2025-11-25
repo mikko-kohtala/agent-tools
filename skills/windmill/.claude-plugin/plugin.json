@@ -7,6 +7,5 @@
   },
   "repository": "https://github.com/mikko-kohtala/agent-tools",
   "license": "MIT",
-  "keywords": ["windmill", "workflow", "automation", "platform", "openflow", "rust", "svelte", "typescript"],
-  "category": "development"
+  "keywords": ["windmill", "workflow", "automation", "platform", "openflow", "rust", "svelte", "typescript"]
 }
