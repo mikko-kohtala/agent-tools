@@ -26,6 +26,17 @@
       },
       "category": "development",
       "keywords": ["windmill", "workflow", "automation", "platform", "openflow"]
+    },
+    {
+      "name": "playwright",
+      "source": "./skills/playwright",
+      "description": "Browser automation with Playwright. Claude autonomously writes and executes custom automation for testing pages, validating UX, and any browser task.",
+      "version": "4.0.2",
+      "author": {
+        "name": "lackeyjb"
+      },
+      "category": "testing",
+      "keywords": ["playwright", "browser-automation", "testing", "e2e", "web-testing"]
     }
   ]
 }
