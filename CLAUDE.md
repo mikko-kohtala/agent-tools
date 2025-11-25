@@ -22,12 +22,12 @@ Each skill follows this pattern:
 
 ### Active Skills
 
-**tmux** (`skills/tmux/`): Remote controls tmux sessions for interactive CLIs (Python, gdb, lldb). Uses isolated sockets under `${TMPDIR:-/tmp}/claude-tmux-sockets`. Helper scripts:
+**tmux-skill** (`skills/tmux-skill/`): Remote controls tmux sessions for interactive CLIs (Python, gdb, lldb). Uses isolated sockets under `${TMPDIR:-/tmp}/claude-tmux-sockets`. Helper scripts:
 
 - `find-sessions.sh` - List/filter tmux sessions
 - `wait-for-text.sh` - Poll panes for regex patterns with timeout
 
-**windmill** (`skills/windmill/`): Assists with Windmill platform development. Guides agents working on Windmill codebase (Rust backend, Svelte frontend, TypeScript CLI) and creating Windmill projects. Includes complete language references, workflow patterns, CLI reference, and scaffolding tools. Files:
+**windmill-skill** (`skills/windmill-skill/`): Assists with Windmill platform development. Guides agents working on Windmill codebase (Rust backend, Svelte frontend, TypeScript CLI) and creating Windmill projects. Includes complete language references, workflow patterns, CLI reference, and scaffolding tools. Files:
 
 - `SCRIPT_GUIDANCE.md` - Complete script-writing guide for all supported languages
 - `WORKFLOW_GUIDANCE.md` - Complete OpenFlow workflow specification

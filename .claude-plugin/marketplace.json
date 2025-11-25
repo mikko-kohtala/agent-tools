@@ -6,8 +6,8 @@
   },
   "plugins": [
     {
-      "name": "tmux",
-      "source": "./skills/tmux",
+      "name": "tmux-skill",
+      "source": "./skills/tmux-skill",
       "description": "Remote control tmux sessions for interactive CLIs (python, gdb, etc.) by sending keystrokes and scraping pane output",
       "version": "1.0.0",
       "author": {
@@ -17,8 +17,8 @@
       "keywords": ["tmux", "terminal", "interactive", "cli", "debugging"]
     },
     {
-      "name": "windmill",
-      "source": "./skills/windmill",
+      "name": "windmill-skill",
+      "source": "./skills/windmill-skill",
       "description": "Assist with Windmill platform development. Guide agents working on Windmill codebase and creating Windmill projects",
       "version": "1.0.0",
       "author": {
@@ -28,8 +28,8 @@
       "keywords": ["windmill", "workflow", "automation", "platform", "openflow"]
     },
     {
-      "name": "playwright",
-      "source": "./skills/playwright",
+      "name": "playwright-skill",
+      "source": "./skills/playwright-skill",
       "description": "Browser automation with Playwright. Claude autonomously writes and executes custom automation for testing pages, validating UX, and any browser task.",
       "version": "4.0.2",
       "author": {
@@ -37,6 +37,28 @@
       },
       "category": "testing",
       "keywords": ["playwright", "browser-automation", "testing", "e2e", "web-testing"]
+    },
+    {
+      "name": "gemini-imagegen-skill",
+      "source": "./skills/gemini-imagegen-skill",
+      "description": "Generate and edit images using the Gemini API. Supports text-to-image, image editing, multi-turn refinement, and composition.",
+      "version": "1.0.0",
+      "author": {
+        "name": "EveryInc"
+      },
+      "category": "media",
+      "keywords": ["gemini", "image-generation", "ai-images", "google", "editing"]
+    },
+    {
+      "name": "skill-development-skill",
+      "source": "./skills/skill-development-skill",
+      "description": "Guide for creating effective Claude Code skills following progressive disclosure principles",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "development",
+      "keywords": ["skills", "plugins", "development", "guide", "claude-code"]
     }
   ]
 }

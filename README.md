@@ -17,55 +17,28 @@ claude plugin marketplace add mikko-kohtala/agent-tools
 Then install skills:
 
 ```bash
-claude plugin install tmux
-claude plugin install windmill
-claude plugin install skill-development
+claude plugin install tmux-skill
+claude plugin install windmill-skill
+claude plugin install playwright-skill
 ```
 
 ### Install Individual Skills Directly
 
 ```bash
-claude plugin install github:mikko-kohtala/agent-tools/skills/tmux
-claude plugin install github:mikko-kohtala/agent-tools/skills/windmill
-claude plugin install github:mikko-kohtala/agent-tools/skills/skill-development
+claude plugin install github:mikko-kohtala/agent-tools/skills/tmux-skill
+claude plugin install github:mikko-kohtala/agent-tools/skills/windmill-skill
+claude plugin install github:mikko-kohtala/agent-tools/skills/playwright-skill
 ```
 
 ## Skills
 
-### tmux (`skills/tmux/`)
-
-Remote control tmux sessions for interactive CLIs (Python, gdb, lldb, etc.) by sending keystrokes and scraping pane output.
-
-_Origin: [Armin Ronacher](https://github.com/mitsuhiko) - [agent-commands](https://github.com/mitsuhiko/agent-commands)_
-
-### windmill (`skills/windmill/`)
-
-Assist with Windmill platform development. Guide agents working on Windmill codebase (backend Rust, frontend Svelte, CLI TypeScript) and helping users create Windmill projects. Provides workflows for scripts/flows creation, references existing guidance files, and scaffolding tools.
-
-**Features:**
-
-- Complete workflow patterns for script and flow development
-- CLI command reference
-- Interactive scaffolding tools (init-script.sh, init-flow.sh)
-- Development best practices
-- Testing and deployment strategies
-
-_Origin: Vibecoded_
-
-### skill-development (`skills/skill-development/`)
-
-Guide agents in creating effective skills for Claude Code plugins following progressive disclosure principles. Comprehensive documentation on skill anatomy, creation process, validation checklist, writing style requirements, and best practices for building modular, self-contained packages that extend Claude's capabilities.
-
-**Features:**
-
-- Six-step skill creation process (understanding, planning, structure, editing, validation, iteration)
-- Progressive disclosure design principles (metadata → SKILL.md → bundled resources)
-- Plugin-specific considerations and auto-discovery
-- Writing style requirements (imperative form, third-person descriptions)
-- Validation checklist and common mistakes to avoid
-- Examples from plugin-dev skills demonstrating best practices
-
-_Origin: [Anthropic](https://github.com/anthropics) - [claude-code](https://github.com/anthropics/claude-code)_
+| Skill | Description | Origin |
+|-------|-------------|--------|
+| [tmux-skill](skills/tmux-skill/) | Remote control tmux sessions for interactive CLIs | [Armin Ronacher](https://github.com/mitsuhiko/agent-commands) |
+| [windmill-skill](skills/windmill-skill/) | Windmill platform development assistance | Vibecoded |
+| [playwright-skill](skills/playwright-skill/) | Browser automation with Playwright | [lackeyjb](https://github.com/lackeyjb/playwright-skill) |
+| [gemini-imagegen-skill](skills/gemini-imagegen-skill/) | Gemini API image generation | [EveryInc](https://github.com/EveryInc/every-marketplace/tree/main/plugins/compounding-engineering/skills/gemini-imagegen) |
+| [skill-development-skill](skills/skill-development-skill/) | Guide for creating Claude Code skills | [Anthropic](https://github.com/anthropics/claude-code) |
 
 ## Commands
 
