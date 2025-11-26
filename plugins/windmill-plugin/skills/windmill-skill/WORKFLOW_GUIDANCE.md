@@ -48,7 +48,7 @@ id: unique_step_id
 value:
   type: rawscript
   content: "!inline inline_script_1.inline_script.ts"
-  language: bun|deno|python3|go|bash|powershell|postgresql|mysql|bigquery|snowflake|mssql|oracledb|graphql|nativets|php
+  language: bun|deno|python3|go|bash|powershell|postgresql|mysql|bigquery|snowflake|mssql|oracledb|graphql|php
   input_transforms:
     param1:
       type: javascript|static

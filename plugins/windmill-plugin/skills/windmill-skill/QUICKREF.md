@@ -408,7 +408,7 @@ wmill sync push
 
 ## Supported Languages (23)
 
-`bun`, `deno`, `nativets`, `python3`, `go`, `bash`, `postgresql`, `mysql`, `bigquery`, `snowflake`, `mssql`, `graphql`, `powershell`, `rust`, `php`, `csharp`, `java`, `ruby`, `docker`, `rest`, `ansible`, `nushell`, `bunnative`
+`bun`, `deno`, `python3`, `go`, `bash`, `postgresql`, `mysql`, `bigquery`, `snowflake`, `mssql`, `graphql`, `powershell`, `rust`, `php`, `csharp`, `java`, `ruby`, `docker`, `rest`, `ansible`, `nushell`, `bunnative`
 
 ## Important URLs
 

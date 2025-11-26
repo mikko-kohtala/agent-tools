@@ -1,6 +1,6 @@
 ---
 name: windmill
-description: "Help users create Windmill scripts, workflows, and apps. Use when user mentions workflow automation, creating internal tools, Windmill CLI, or OpenFlow YAML. Supports 18+ languages including TypeScript, Python, Go, Bash, SQL, Rust, Docker, REST/GraphQL."
+description: "Help users create Windmill scripts, workflows, and apps. Use when user mentions workflow automation, creating internal tools, Windmill CLI, or OpenFlow YAML. Supports 23 languages - see languages/ directory for each."
 license: MIT
 ---
 
@@ -93,17 +93,53 @@ Use this skill when the user:
 2. Use `tools/init-app.sh` for interactive scaffolding
 3. Deploy with `wmill sync push`
 
+## Language-Specific Guidance
+
+**IMPORTANT:** When writing scripts, read the language file from `languages/` directory for conventions and examples.
+
+### Language File Lookup
+
+| User wants           | Read file                 |
+| -------------------- | ------------------------- |
+| TypeScript (fastest) | `languages/bun.md`        |
+| TypeScript (Deno)    | `languages/deno.md`       |
+| Python               | `languages/python3.md`    |
+| Go                   | `languages/go.md`         |
+| Rust                 | `languages/rust.md`       |
+| Bash/shell           | `languages/bash.md`       |
+| PHP                  | `languages/php.md`        |
+| PostgreSQL           | `languages/postgresql.md` |
+| MySQL                | `languages/mysql.md`      |
+| BigQuery             | `languages/bigquery.md`   |
+| Snowflake            | `languages/snowflake.md`  |
+| SQL Server           | `languages/mssql.md`      |
+| GraphQL              | `languages/graphql.md`    |
+| PowerShell           | `languages/powershell.md` |
+| C# / .NET            | `languages/csharp.md`     |
+| Java                 | `languages/java.md`       |
+| Ruby                 | `languages/ruby.md`       |
+| Docker               | `languages/docker.md`     |
+| REST API             | `languages/rest.md`       |
+| Ansible              | `languages/ansible.md`    |
+| Nu shell             | `languages/nushell.md`    |
+
+Each language file contains: conventions, resource types (if applicable), wmill client API (TypeScript/Python), and examples.
+
+### Default Language Recommendations
+
+- **General automation**: `bun` (TypeScript) or `python3`
+- **Database queries**: Use the matching SQL dialect file
+- **System scripts**: `bash`
+- **Infrastructure**: `ansible` or `docker`
+
 ## Comprehensive Guidance Files
 
 This skill includes detailed reference files:
 
 **For Scripts:**
-Read `SCRIPT_GUIDANCE.md` in this skill directory for:
 
-- Complete language-specific conventions (18+ languages)
-- Resource type patterns (credentials, databases, APIs)
-- Windmill client API reference (`wmill`)
-- Workflow steps for script creation
+- `SCRIPT_GUIDANCE.md` - General principles, workflow, language index
+- `languages/*.md` - Language-specific conventions (23 languages)
 
 **For Flows:**
 Read `WORKFLOW_GUIDANCE.md` in this skill directory for:
@@ -153,7 +189,7 @@ Interactive script scaffolding wizard - useful when CLI bootstrap isn't availabl
 
 Features:
 
-- 18 language choices (bun, deno, python3, go, bash, SQL variants, rust, php, docker, REST/GraphQL, ansible, ruby, C#, java, nu shell)
+- 23 language choices (see Language File Lookup table above)
 - Interactive prompts for folder path and script name
 - Pre-configured templates with best practices
 - Automatic metadata generation
@@ -278,7 +314,11 @@ When helping users with Windmill:
 
 1. **Clarify user goal**: script, flow, app, resource, or schedule?
 2. **Ask for folder path early** (e.g., `f/integrations/stripe/` or `u/username/`)
-3. **For scripts**: Use `wmill script bootstrap` OR scaffold with `init-script.sh`; then `wmill script generate-metadata`; test with `wmill script run`; deploy with `wmill sync push`
+3. **For scripts**:
+   - Determine language → Read corresponding `languages/*.md` file
+   - Use `wmill script bootstrap` OR scaffold manually following language conventions
+   - Run `wmill script generate-metadata`
+   - Test with `wmill script run`; deploy with `wmill sync push`
 4. **For flows**: Use `wmill flow bootstrap` OR scaffold with `init-flow.sh`; author inline scripts; run `wmill flow generate-locks --yes`; test with `wmill flow run`; deploy with sync
 5. **For apps**: Use `init-app.sh` for scaffolding; push with `wmill sync push`
 6. **Always confirm resource types** via `wmill resource-type list --schema` before assuming names
@@ -290,12 +330,13 @@ When helping users with Windmill:
 
 **Agent workflow:**
 
-1. Ask for target folder (e.g., `f/integrations/stripe/`)
-2. Check resource type existence: `wmill resource-type list --schema | grep -i stripe`
-3. Scaffold script with Stripe resource parameter (TypeScript with `RT.Stripe` or Python with `stripe` TypedDict)
-4. Generate metadata: `wmill script generate-metadata`
-5. Offer test command with sample data/resource reference
-6. Suggest: `wmill sync push` to deploy
+1. Ask for target folder (e.g., `f/integrations/stripe/`) and language preference
+2. Read the language file (e.g., `languages/bun.md` or `languages/python3.md`)
+3. Check resource type existence: `wmill resource-type list --schema | grep -i stripe`
+4. Scaffold script following language conventions with Stripe resource parameter
+5. Generate metadata: `wmill script generate-metadata`
+6. Offer test command with sample data/resource reference
+7. Suggest: `wmill sync push` to deploy
 
 ### Safety & Secrets
 
