@@ -32,13 +32,13 @@ claude plugin install github:mikko-kohtala/agent-tools/plugins/windmill-plugin
 
 ## Plugins
 
-| Plugin | Skills | Commands | Agents | Hooks | Origin |
-|--------|--------|----------|--------|-------|--------|
-| [playwright-plugin](plugins/playwright-plugin/) | playwright-skill | - | - | - | [lackeyjb](https://github.com/lackeyjb/playwright-skill) |
-| [tmux-plugin](plugins/tmux-plugin/) | tmux-skill | - | - | - | [Armin Ronacher](https://github.com/mitsuhiko/agent-commands) |
-| [windmill-plugin](plugins/windmill-plugin/) | windmill-skill | - | - | - | Vibecoded |
-| [gemini-imagegen-plugin](plugins/gemini-imagegen-plugin/) | gemini-imagegen-skill | - | - | - | [EveryInc](https://github.com/EveryInc/every-marketplace) |
-| [skill-development-plugin](plugins/skill-development-plugin/) | skill-development-skill | - | - | - | [Anthropic](https://github.com/anthropics/claude-code) |
+| Plugin                                                        | Skills                  | Commands | Agents | Hooks | Origin                                                        |
+| ------------------------------------------------------------- | ----------------------- | -------- | ------ | ----- | ------------------------------------------------------------- |
+| [playwright-plugin](plugins/playwright-plugin/)               | playwright-skill        | -        | -      | -     | [lackeyjb](https://github.com/lackeyjb/playwright-skill)      |
+| [tmux-plugin](plugins/tmux-plugin/)                           | tmux-skill              | -        | -      | -     | [Armin Ronacher](https://github.com/mitsuhiko/agent-commands) |
+| [windmill-plugin](plugins/windmill-plugin/)                   | windmill-skill          | -        | -      | -     | Vibecoded                                                     |
+| [gemini-imagegen-plugin](plugins/gemini-imagegen-plugin/)     | gemini-imagegen-skill   | -        | -      | -     | [EveryInc](https://github.com/EveryInc/every-marketplace)     |
+| [skill-development-plugin](plugins/skill-development-plugin/) | skill-development-skill | -        | -      | -     | [Anthropic](https://github.com/anthropics/claude-code)        |
 
 ## Reference Links
 
