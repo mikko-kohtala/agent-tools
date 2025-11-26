@@ -149,6 +149,14 @@ Read `WORKFLOW_GUIDANCE.md` in this skill directory for:
 - Input transforms and data flow patterns
 - Advanced properties (error handling, retry, suspend/approval)
 
+**For Parallelism:**
+Read `PARALLELISM.md` in this skill directory for:
+
+- Flow-level parallelism (forloopflow, branchall)
+- Step-level parallelism (Promise.all, asyncio.gather)
+- Multi-instance parallelism (separate workflow runs)
+- Decision guide for choosing the right approach
+
 **For Apps:**
 Read `APP_GUIDANCE.md` in this skill directory for:
 
@@ -391,6 +399,7 @@ For detailed patterns and examples, read the PATTERNS.md file in this skill dire
 - [OpenFlow Standard](https://www.openflow.dev)
 - **Script Reference**: Read SCRIPT_GUIDANCE.md
 - **Workflow Reference**: Read WORKFLOW_GUIDANCE.md
+- **Parallelism Guide**: Read PARALLELISM.md
 - **App Reference**: Read APP_GUIDANCE.md
 - **CLI Reference**: Read WINDMILL_CLI.md
 - **Workflow Patterns**: Read PATTERNS.md

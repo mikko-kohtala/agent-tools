@@ -73,3 +73,96 @@ export async function main(name: string, count: number = 1) {
   };
 }
 ```
+
+## Parallel Execution (Promise.all)
+
+Use `Promise.all` for step-level parallelism - executing multiple async operations concurrently within a single script.
+
+```typescript
+export async function main(
+  urls: string[],
+  api_key: string
+) {
+  // Execute all requests in parallel
+  const results = await Promise.all(
+    urls.map(async (url) => {
+      const start = Date.now();
+      try {
+        const response = await fetch(url, {
+          headers: { "Authorization": `Bearer ${api_key}` }
+        });
+        const data = await response.json();
+        return {
+          url,
+          status: "ok",
+          data,
+          latencyMs: Date.now() - start
+        };
+      } catch (error) {
+        return {
+          url,
+          status: "error",
+          error: String(error),
+          latencyMs: Date.now() - start
+        };
+      }
+    })
+  );
+
+  return {
+    total: results.length,
+    succeeded: results.filter(r => r.status === "ok").length,
+    results
+  };
+}
+```
+
+### Multi-Model Analysis Pattern
+
+```typescript
+export async function main(
+  prompt: string,
+  models: string[],
+  litellm_url: string
+) {
+  const results = await Promise.all(
+    models.map(async (model) => {
+      const response = await fetch(`${litellm_url}/v1/chat/completions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: "user", content: prompt }]
+        })
+      });
+      const data = await response.json();
+      return { model, result: data.choices[0].message.content };
+    })
+  );
+  return results;
+}
+```
+
+### Triggering Parallel Workflows
+
+```typescript
+import * as wmill from "windmill-client";
+
+export async function main(items: string[]) {
+  // Trigger separate workflow instances in parallel
+  const jobIds = await Promise.all(
+    items.map((item) =>
+      wmill.runScriptAsync("f/workflows/process_item", null, { item })
+    )
+  );
+
+  // Wait for all to complete
+  const results = await Promise.all(
+    jobIds.map((id) => wmill.waitJob(id))
+  );
+
+  return results;
+}
+```
+
+See `PARALLELISM.md` for full parallelism guide including flow-level patterns.

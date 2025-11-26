@@ -254,6 +254,57 @@ value:
       modules: [/* ... */]
 ```
 
+## Parallelism Decision Guide
+
+```
+Need per-item monitoring/retries?
+├─ Yes → ForLoopFlow (parallel: true)
+└─ No
+   ├─ Different logic per path? → BranchAll
+   └─ Same logic, different inputs?
+      ├─ Need isolation? → Multi-Instance (wmill.runScript)
+      └─ Simple fan-out? → Promise.all / asyncio.gather
+```
+
+| Level | Mechanism | Best For |
+|-------|-----------|----------|
+| Flow-level | `forloopflow`, `branchall` | Batch with monitoring |
+| Step-level | `Promise.all`, `asyncio.gather` | Quick API fan-out |
+| Multi-instance | `wmill.runScript()` | Resource isolation |
+
+### Step-Level Parallelism (In-Script)
+
+```typescript
+// TypeScript - Promise.all
+const results = await Promise.all(
+  items.map(async (item) => {
+    const res = await fetch(url, { body: JSON.stringify({ item }) });
+    return res.json();
+  })
+);
+```
+
+```python
+# Python - asyncio.gather
+import asyncio
+results = await asyncio.gather(*[process(item) for item in items])
+```
+
+### Multi-Instance (Trigger Parallel Workflows)
+
+```typescript
+import * as wmill from "windmill-client";
+
+// Trigger N workflows in parallel
+const jobIds = await Promise.all(
+  models.map((m) => wmill.runScript("f/flow/path", null, { model: m }))
+);
+// Wait for results
+const results = await Promise.all(jobIds.map((id) => wmill.waitJob(id)));
+```
+
+See `PARALLELISM.md` for full guide.
+
 ## Flow Data References
 
 ```yaml
