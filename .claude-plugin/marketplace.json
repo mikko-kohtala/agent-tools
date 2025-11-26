@@ -71,6 +71,17 @@
       },
       "category": "development",
       "keywords": ["skills", "plugins", "development", "guide", "claude-code"]
+    },
+    {
+      "name": "codex-plugin",
+      "source": "./plugins/codex-plugin",
+      "description": "Invoke Codex CLI for automated code analysis, refactoring, and editing workflows",
+      "version": "1.0.0",
+      "author": {
+        "name": "skills-directory"
+      },
+      "category": "development",
+      "keywords": ["codex", "openai", "code-analysis", "refactoring", "automation"]
     }
   ]
 }
