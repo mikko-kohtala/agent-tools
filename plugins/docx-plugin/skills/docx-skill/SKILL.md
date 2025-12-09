@@ -53,18 +53,17 @@ You need raw XML access for: comments, complex formatting, document structure, e
 
 ## Creating a new Word document
 
-When creating a new Word document from scratch, use **docx-js**, which allows you to create Word documents using JavaScript ESM modules.
+When creating a new Word document from scratch, use **python-docx**, which allows you to create Word documents using Python.
 
 ### Workflow
-1. **MANDATORY - READ ENTIRE FILE**: Read [`docx-js.md`](docx-js.md) (~500 lines) completely from start to finish. **NEVER set any range limits when reading this file.** Read the full file content for detailed syntax, critical formatting rules, and best practices before proceeding with document creation.
-2. Create a `.mjs` file (ESM module) with auto-detection of global docx package:
-   ```javascript
-   import { execSync } from 'child_process';
-   const globalPath = execSync('npm root -g').toString().trim();
-   const docx = await import(`${globalPath}/docx/dist/index.mjs`);
+1. **MANDATORY - READ ENTIRE FILE**: Read [`python-docx.md`](python-docx.md) completely from start to finish. **NEVER set any range limits when reading this file.** Read the full file content for detailed syntax, common patterns, and best practices before proceeding with document creation.
+2. Create a Python script importing the library:
+   ```python
+   from docx import Document
+   from docx.shared import Pt, Inches
    ```
-3. Use Document, Paragraph, TextRun components from imported docx
-4. Export as .docx using Packer.toBuffer()
+3. Use Document methods: `add_heading()`, `add_paragraph()`, `add_table()`, etc.
+4. Save document: `doc.save('output.docx')`
 
 ## Editing an existing Word document
 
@@ -197,9 +196,7 @@ pdftoppm -jpeg -r 150 -f 2 -l 5 document.pdf page  # Converts only pages 2-5
 Required dependencies (install if not available):
 
 - **pandoc**: `sudo apt-get install pandoc` (for text extraction)
-- **docx**: `npm install -g docx` (for creating new documents - install globally once)
+- **python-docx**: `pip install python-docx` (for creating new documents)
 - **LibreOffice**: `sudo apt-get install libreoffice` (for PDF conversion)
 - **Poppler**: `sudo apt-get install poppler-utils` (for pdftoppm to convert PDF to images)
 - **defusedxml**: `pip install defusedxml` (for secure XML parsing)
-
-**Important**: The docx package should be installed globally (`npm install -g docx`). Scripts use ESM with auto-detection to find the global installation, so no local node_modules are needed in project directories.
