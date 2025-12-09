@@ -53,12 +53,18 @@ You need raw XML access for: comments, complex formatting, document structure, e
 
 ## Creating a new Word document
 
-When creating a new Word document from scratch, use **docx-js**, which allows you to create Word documents using JavaScript/TypeScript.
+When creating a new Word document from scratch, use **docx-js**, which allows you to create Word documents using JavaScript ESM modules.
 
 ### Workflow
 1. **MANDATORY - READ ENTIRE FILE**: Read [`docx-js.md`](docx-js.md) (~500 lines) completely from start to finish. **NEVER set any range limits when reading this file.** Read the full file content for detailed syntax, critical formatting rules, and best practices before proceeding with document creation.
-2. Create a JavaScript/TypeScript file using Document, Paragraph, TextRun components (You can assume all dependencies are installed, but if not, refer to the dependencies section below)
-3. Export as .docx using Packer.toBuffer()
+2. Create a `.mjs` file (ESM module) with auto-detection of global docx package:
+   ```javascript
+   import { execSync } from 'child_process';
+   const globalPath = execSync('npm root -g').toString().trim();
+   const docx = await import(`${globalPath}/docx/dist/index.mjs`);
+   ```
+3. Use Document, Paragraph, TextRun components from imported docx
+4. Export as .docx using Packer.toBuffer()
 
 ## Editing an existing Word document
 
@@ -191,7 +197,9 @@ pdftoppm -jpeg -r 150 -f 2 -l 5 document.pdf page  # Converts only pages 2-5
 Required dependencies (install if not available):
 
 - **pandoc**: `sudo apt-get install pandoc` (for text extraction)
-- **docx**: `npm install -g docx` (for creating new documents)
+- **docx**: `npm install -g docx` (for creating new documents - install globally once)
 - **LibreOffice**: `sudo apt-get install libreoffice` (for PDF conversion)
 - **Poppler**: `sudo apt-get install poppler-utils` (for pdftoppm to convert PDF to images)
 - **defusedxml**: `pip install defusedxml` (for secure XML parsing)
+
+**Important**: The docx package should be installed globally (`npm install -g docx`). Scripts use ESM with auto-detection to find the global installation, so no local node_modules are needed in project directories.

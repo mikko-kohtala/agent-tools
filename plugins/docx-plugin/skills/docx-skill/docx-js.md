@@ -5,21 +5,42 @@ Generate .docx files with JavaScript/TypeScript.
 **Important: Read this entire document before starting.** Critical formatting rules and common pitfalls are covered throughout - skipping sections may result in corrupted files or rendering issues.
 
 ## Setup
-Assumes docx is already installed globally
-If not installed: `npm install -g docx`
+
+**IMPORTANT: Use ESM with .mjs extension**
+
+Assumes docx is already installed globally:
+```bash
+npm install -g docx
+```
+
+Create `.mjs` files (not `.js`) and use ESM syntax:
 
 ```javascript
-const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, ImageRun, Media, 
-        Header, Footer, AlignmentType, PageOrientation, LevelFormat, ExternalHyperlink, 
-        InternalHyperlink, TableOfContents, HeadingLevel, BorderStyle, WidthType, TabStopType, 
+import { execSync } from 'child_process';
+import { writeFileSync } from 'fs';
+
+// Auto-detect global docx installation
+const globalPath = execSync('npm root -g').toString().trim();
+const docx = await import(`${globalPath}/docx/dist/index.mjs`);
+
+// Destructure what you need
+const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, ImageRun,
+        Header, Footer, AlignmentType, PageOrientation, LevelFormat, ExternalHyperlink,
+        InternalHyperlink, TableOfContents, HeadingLevel, BorderStyle, WidthType, TabStopType,
         TabStopPosition, UnderlineType, ShadingType, VerticalAlign, SymbolRun, PageNumber,
-        FootnoteReferenceRun, Footnote, PageBreak } = require('docx');
+        FootnoteReferenceRun, Footnote, PageBreak } = docx;
 
 // Create & Save
 const doc = new Document({ sections: [{ children: [/* content */] }] });
-Packer.toBuffer(doc).then(buffer => fs.writeFileSync("doc.docx", buffer)); // Node.js
-Packer.toBlob(doc).then(blob => { /* download logic */ }); // Browser
+const buffer = await Packer.toBuffer(doc);
+writeFileSync("doc.docx", buffer);
 ```
+
+**Why this approach:**
+- No local node_modules needed - truly standalone
+- Install docx globally once, use anywhere
+- Auto-detects global package location
+- Clean project directories
 
 ## Text & Formatting
 ```javascript
@@ -256,13 +277,15 @@ new Paragraph({
 
 ## Images & Media
 ```javascript
+import { readFileSync } from 'fs';
+
 // Basic image with sizing & positioning
 // CRITICAL: Always specify 'type' parameter - it's REQUIRED for ImageRun
 new Paragraph({
   alignment: AlignmentType.CENTER,
   children: [new ImageRun({
     type: "png", // NEW REQUIREMENT: Must specify image type (png, jpg, jpeg, gif, bmp, svg)
-    data: fs.readFileSync("image.png"),
+    data: readFileSync("image.png"),
     transformation: { width: 200, height: 150, rotation: 0 }, // rotation in degrees
     altText: { title: "Logo", description: "Company logo", name: "Name" } // IMPORTANT: All three fields are required
   })]
