@@ -20,6 +20,8 @@ Then install plugins:
 claude plugin install playwright-plugin
 claude plugin install tmux-plugin
 claude plugin install windmill-plugin
+claude plugin install docx-plugin
+claude plugin install pptx-plugin
 ```
 
 ### Install Individual Plugins Directly
@@ -28,6 +30,8 @@ claude plugin install windmill-plugin
 claude plugin install github:mikko-kohtala/agent-tools/plugins/playwright-plugin
 claude plugin install github:mikko-kohtala/agent-tools/plugins/tmux-plugin
 claude plugin install github:mikko-kohtala/agent-tools/plugins/windmill-plugin
+claude plugin install github:mikko-kohtala/agent-tools/plugins/docx-plugin
+claude plugin install github:mikko-kohtala/agent-tools/plugins/pptx-plugin
 ```
 
 ## Plugins
@@ -40,6 +44,8 @@ claude plugin install github:mikko-kohtala/agent-tools/plugins/windmill-plugin
 | [gemini-imagegen-plugin](plugins/gemini-imagegen-plugin/)     | gemini-imagegen-skill   | -        | -      | -     | [EveryInc](https://github.com/EveryInc/every-marketplace)     |
 | [skill-development-plugin](plugins/skill-development-plugin/) | skill-development-skill | -        | -      | -     | [Anthropic](https://github.com/anthropics/claude-code)        |
 | [codex-plugin](plugins/codex-plugin/)                         | codex-skill             | -        | -      | -     | [skills-directory](https://github.com/skills-directory/skill-codex) |
+| [docx-plugin](plugins/docx-plugin/)                           | docx-skill              | -        | -      | -     | [Anthropic](https://github.com/anthropics/skills)             |
+| [pptx-plugin](plugins/pptx-plugin/)                           | pptx-skill              | -        | -      | -     | [Anthropic](https://github.com/anthropics/skills)             |
 
 ## Reference Links
 

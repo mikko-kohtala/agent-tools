@@ -82,6 +82,28 @@
       },
       "category": "development",
       "keywords": ["codex", "openai", "code-analysis", "refactoring", "automation"]
+    },
+    {
+      "name": "docx-plugin",
+      "source": "./plugins/docx-plugin",
+      "description": "Comprehensive document creation, editing, and analysis with support for tracked changes, comments, formatting preservation, and text extraction.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "documents",
+      "keywords": ["docx", "documents", "word", "ooxml", "editing", "tracked-changes"]
+    },
+    {
+      "name": "pptx-plugin",
+      "source": "./plugins/pptx-plugin",
+      "description": "Presentation creation, editing, and analysis. Work with PowerPoint presentations using OOXML and HTML conversion.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Anthropic"
+      },
+      "category": "documents",
+      "keywords": ["pptx", "presentations", "powerpoint", "ooxml", "html2pptx", "slides"]
     }
   ]
 }
