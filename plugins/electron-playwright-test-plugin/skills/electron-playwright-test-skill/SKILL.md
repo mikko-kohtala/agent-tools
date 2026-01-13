@@ -1,5 +1,5 @@
 ---
-name: electron-e2e
+name: electron-playwright-test
 description: "Use this skill to E2E test Electron applications with Playwright. Helps verify UI changes, test IPC communication, and validate terminal interactions. Use when user wants to test the app after changes, verify agent work, or run E2E tests."
 version: 1.0.0
 author: Mikko Kohtala

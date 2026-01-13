@@ -1,5 +1,5 @@
 {
-  "name": "electron-e2e-plugin",
+  "name": "electron-playwright-test-plugin",
   "version": "1.0.0",
   "description": "E2E testing for Electron apps using Playwright",
   "author": {

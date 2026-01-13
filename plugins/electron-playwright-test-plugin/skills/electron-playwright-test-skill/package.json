@@ -1,5 +1,5 @@
 {
-  "name": "electron-e2e-skill",
+  "name": "electron-playwright-test-skill",
   "version": "1.0.0",
   "description": "E2E testing skill for Electron apps using Playwright",
   "main": "run.js",
