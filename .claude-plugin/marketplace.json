@@ -104,6 +104,17 @@
       },
       "category": "documents",
       "keywords": ["pptx", "presentations", "powerpoint", "ooxml", "html2pptx", "slides"]
+    },
+    {
+      "name": "electron-e2e-plugin",
+      "source": "./plugins/electron-e2e-plugin",
+      "description": "E2E testing for Electron apps with Playwright. Verify UI changes, test IPC handlers, and validate terminal interactions.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikko Kohtala"
+      },
+      "category": "testing",
+      "keywords": ["electron", "e2e", "playwright", "testing", "automation"]
     }
   ]
 }
