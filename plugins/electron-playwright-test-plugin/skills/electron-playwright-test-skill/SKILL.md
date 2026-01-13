@@ -27,6 +27,20 @@ E2E testing skill for Electron apps using Playwright's experimental Electron sup
 4. Test interacts with windows and IPC handlers
 5. Results displayed in real-time
 
+## Prerequisites
+
+**IMPORTANT: Dev server must be running!**
+
+Before running any tests, ensure `bun run dev` is running in a separate terminal:
+
+```bash
+# In a separate terminal window (keep this running):
+cd /Users/mikko/code/multi-ai-app
+bun run dev
+```
+
+The skill will check for the dev server on port 5173 and provide clear error messages if it's not available.
+
 ## Setup (First Time)
 
 ```bash
@@ -329,6 +343,11 @@ const { waitForShellPrompt, runCommand } = require('./lib/terminal-helpers');
 - **Use fixtures** - `setupTestProject()` creates a test git repo automatically
 
 ## Troubleshooting
+
+**"Dev server not running" error:**
+- Start `bun run dev` in a separate terminal first
+- Keep the terminal open while running tests
+- The dev server must stay running on port 5173
 
 **App doesn't launch:**
 - Ensure multi-ai-app dependencies are installed: `cd /Users/mikko/code/multi-ai-app && bun install`
