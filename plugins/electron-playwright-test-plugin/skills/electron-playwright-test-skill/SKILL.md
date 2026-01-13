@@ -6,8 +6,8 @@ author: Mikko Kohtala
 tags: [electron, e2e, playwright, testing]
 ---
 
-**IMPORTANT - Path Resolution:**
-This skill can be installed in different locations. Before executing any commands, determine the skill directory based on where you loaded this SKILL.md file, and use that path in all commands. Replace `$SKILL_DIR` with the actual discovered path.
+**Path Resolution:**
+When you run the skill, it outputs its directory path. Use that path in subsequent commands. The skill auto-detects its location - no manual path substitution needed.
 
 # Electron E2E Testing
 
@@ -29,17 +29,16 @@ E2E testing skill for Electron apps using Playwright's experimental Electron sup
 
 ## Prerequisites
 
-**IMPORTANT: Dev server must be running!**
+The skill will **auto-start** the Vite dev server if it's not running. No manual setup required!
 
-Before running any tests, ensure `bun run dev` is running in a separate terminal:
-
+If you prefer to run the dev server manually (for faster test cycles):
 ```bash
-# In a separate terminal window (keep this running):
+# In a separate terminal:
 cd /Users/mikko/code/multi-ai-app
 bun run dev
 ```
 
-The skill will check for the dev server on port 5173 and provide clear error messages if it's not available.
+The skill checks port 5173 and auto-starts Vite when needed, then cleans up after tests.
 
 ## Setup (First Time)
 
@@ -69,8 +68,8 @@ const { launchApp, waitForAppReady, screenshot, closeApp } = require('./lib/elec
   const title = await page.title();
   console.log('Window title:', title);
 
-  // Check sidebar is visible
-  const sidebar = await page.locator('.border-r').first();
+  // Check sidebar is visible (uses data-testid for stability)
+  const sidebar = await page.locator('[data-testid="sidebar"]');
   if (await sidebar.isVisible()) {
     console.log('Sidebar is visible');
   }
@@ -287,9 +286,9 @@ const { launchApp, waitForAppReady, screenshot, closeApp } = require('./lib/elec
     await screenshot(page, 'after-click');
   }
 
-  // Check for specific elements
+  // Check for specific elements (prefer data-testid when available)
   const elements = {
-    sidebar: await page.locator('.border-r').first().isVisible(),
+    sidebar: await page.locator('[data-testid="sidebar"]').isVisible(),
     mainArea: await page.locator('.flex-1').first().isVisible(),
   };
   console.log('Visible elements:', elements);
@@ -341,13 +340,18 @@ const { waitForShellPrompt, runCommand } = require('./lib/terminal-helpers');
 - **Terminal testing** - ghostty-web renders to canvas, use `getTerminalOutput()` via IPC
 - **Take screenshots** - `screenshot(page, 'name')` saves to `/tmp/e2e-name-{timestamp}.png`
 - **Use fixtures** - `setupTestProject()` creates a test git repo automatically
+- **Prefer data-testid** - Use `[data-testid="sidebar"]` instead of CSS classes for stability
+- **Set app path** - Set `ELECTRON_APP_PATH` env var or pass `cwd` option to `launchApp()`
 
 ## Troubleshooting
 
+**Vite auto-start taking too long:**
+- The skill auto-starts Vite within 10 seconds
+- If it times out, try running `bun run dev` manually in another terminal
+
 **"Dev server not running" error:**
-- Start `bun run dev` in a separate terminal first
-- Keep the terminal open while running tests
-- The dev server must stay running on port 5173
+- This only happens if auto-start is disabled or fails
+- Start `bun run dev` in a separate terminal as a fallback
 
 **App doesn't launch:**
 - Ensure multi-ai-app dependencies are installed: `cd /Users/mikko/code/multi-ai-app && bun install`

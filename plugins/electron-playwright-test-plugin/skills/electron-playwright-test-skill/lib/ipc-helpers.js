@@ -1,7 +1,10 @@
 /**
  * IPC Testing Helpers
  * Utilities for testing Electron IPC communication
+ * @module ipc-helpers
  */
+
+/** @typedef {import('playwright').Page} Page */
 
 /**
  * Invoke an IPC handler from the renderer context

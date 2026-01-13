@@ -1,12 +1,43 @@
-// playwright-helpers.js
-// Reusable utility functions for Playwright automation
+/**
+ * Playwright Helpers
+ * Reusable utility functions for Playwright automation
+ * @module helpers
+ */
+
+/**
+ * @typedef {import('playwright').Browser} Browser
+ * @typedef {import('playwright').BrowserContext} BrowserContext
+ * @typedef {import('playwright').Page} Page
+ */
+
+/**
+ * @typedef {Object} LaunchOptions
+ * @property {boolean} [headless] - Run in headless mode (default: from HEADLESS env)
+ * @property {number} [slowMo] - Slow down operations (default: from SLOW_MO env)
+ * @property {string[]} [args] - Browser args
+ */
+
+/**
+ * @typedef {Object} PageOptions
+ * @property {{width: number, height: number}} [viewport] - Viewport size
+ * @property {string} [userAgent] - User agent string
+ * @property {number} [timeout] - Default timeout in ms
+ */
+
+/**
+ * @typedef {Object} WaitOptions
+ * @property {string} [waitUntil] - Wait condition ('networkidle', 'domcontentloaded', 'load')
+ * @property {number} [timeout] - Max wait time in ms
+ * @property {string} [waitForSelector] - Additional selector to wait for
+ */
 
 const { chromium, firefox, webkit } = require('playwright');
 
 /**
  * Launch browser with standard configuration
- * @param {string} browserType - 'chromium', 'firefox', or 'webkit'
- * @param {Object} options - Additional launch options
+ * @param {string} [browserType='chromium'] - 'chromium', 'firefox', or 'webkit'
+ * @param {LaunchOptions} [options] - Additional launch options
+ * @returns {Promise<Browser>}
  */
 async function launchBrowser(browserType = 'chromium', options = {}) {
   const defaultOptions = {
@@ -27,8 +58,9 @@ async function launchBrowser(browserType = 'chromium', options = {}) {
 
 /**
  * Create a new page with viewport and user agent
- * @param {Object} context - Browser context
- * @param {Object} options - Page options
+ * @param {BrowserContext} context - Browser context
+ * @param {PageOptions} [options] - Page options
+ * @returns {Promise<Page>}
  */
 async function createPage(context, options = {}) {
   const page = await context.newPage();
@@ -51,8 +83,9 @@ async function createPage(context, options = {}) {
 
 /**
  * Smart wait for page to be ready
- * @param {Object} page - Playwright page
- * @param {Object} options - Wait options
+ * @param {Page} page - Playwright page
+ * @param {WaitOptions} [options] - Wait options
+ * @returns {Promise<void>}
  */
 async function waitForPageReady(page, options = {}) {
   const waitOptions = {

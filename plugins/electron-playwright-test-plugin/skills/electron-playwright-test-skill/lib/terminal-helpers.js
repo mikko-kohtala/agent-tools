@@ -1,10 +1,13 @@
 /**
  * Terminal Testing Helpers
  * Utilities for testing WASM terminal (ghostty-web) interactions
+ * @module terminal-helpers
  *
  * NOTE: ghostty-web renders to <canvas>, so we can't inspect DOM text directly.
  * Instead, we use the output buffer IPC to get terminal content.
  */
+
+/** @typedef {import('playwright').Page} Page */
 
 const { invokeIpc } = require('./ipc-helpers');
 

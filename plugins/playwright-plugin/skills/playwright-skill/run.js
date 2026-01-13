@@ -14,8 +14,32 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
+// Skill directory path (useful for documentation)
+const SKILL_DIR = __dirname;
+
+// Track current temp file for cleanup
+let currentTempFile = null;
+
 // Change to skill directory for proper module resolution
 process.chdir(__dirname);
+
+// Cleanup temp file on exit (handles crashes and normal exit)
+process.on('exit', () => {
+  if (currentTempFile && fs.existsSync(currentTempFile)) {
+    try {
+      fs.unlinkSync(currentTempFile);
+    } catch (e) {
+      // Ignore cleanup errors
+    }
+  }
+});
+
+// Handle SIGINT (Ctrl+C) and SIGTERM
+['SIGINT', 'SIGTERM'].forEach(signal => {
+  process.on(signal, () => {
+    process.exit(0);
+  });
+});
 
 /**
  * Check if Playwright is installed
@@ -160,9 +184,10 @@ const helpers = require('./lib/helpers');
  * Main execution
  */
 async function main() {
-  console.log('🎭 Playwright Skill - Universal Executor\n');
+  console.log('🎭 Playwright Skill - Universal Executor');
+  console.log(`📁 Skill directory: ${SKILL_DIR}\n`);
 
-  // Clean up old temp files from previous runs
+  // Clean up old temp files from previous runs (belt and suspenders)
   cleanupOldTempFiles();
 
   // Check Playwright installation
@@ -178,18 +203,17 @@ async function main() {
   const code = wrapCodeIfNeeded(rawCode);
 
   // Create temporary file for execution
-  const tempFile = path.join(__dirname, `.temp-execution-${Date.now()}.js`);
+  currentTempFile = path.join(__dirname, `.temp-execution-${Date.now()}.js`);
 
   try {
     // Write code to temp file
-    fs.writeFileSync(tempFile, code, 'utf8');
+    fs.writeFileSync(currentTempFile, code, 'utf8');
 
     // Execute the code
     console.log('🚀 Starting automation...\n');
-    require(tempFile);
+    require(currentTempFile);
 
-    // Note: Temp file will be cleaned up on next run
-    // This allows long-running async operations to complete safely
+    // Temp file will be cleaned up on process exit via the exit handler
 
   } catch (error) {
     console.error('❌ Execution failed:', error.message);

@@ -1,7 +1,10 @@
 /**
  * Test Fixtures
  * Setup and teardown helpers for E2E tests
+ * @module fixtures
  */
+
+/** @typedef {import('playwright').Page} Page */
 
 const { execSync } = require('child_process');
 const fs = require('fs');

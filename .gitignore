@@ -14,3 +14,6 @@ Thumbs.db
 
 # Dependencies
 node_modules/
+
+# Temp files from skill execution
+.temp-execution-*.js

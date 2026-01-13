@@ -14,8 +14,35 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
+// Save original CWD before changing to skill directory
+const originalCwd = process.cwd();
+
+// Skill directory path (useful for documentation)
+const SKILL_DIR = __dirname;
+
+// Track current temp file for cleanup
+let currentTempFile = null;
+
 // Change to skill directory for proper module resolution
 process.chdir(__dirname);
+
+// Cleanup temp file on exit (handles crashes and normal exit)
+process.on('exit', () => {
+  if (currentTempFile && fs.existsSync(currentTempFile)) {
+    try {
+      fs.unlinkSync(currentTempFile);
+    } catch (e) {
+      // Ignore cleanup errors
+    }
+  }
+});
+
+// Handle SIGINT (Ctrl+C) and SIGTERM
+['SIGINT', 'SIGTERM'].forEach(signal => {
+  process.on(signal, () => {
+    process.exit(0);
+  });
+});
 
 /**
  * Check if Playwright is installed
@@ -33,14 +60,14 @@ function checkPlaywrightInstalled() {
  * Install Playwright if missing
  */
 function installPlaywright() {
-  console.log('Installing Playwright...');
+  console.log('📦 Playwright not found. Installing...');
   try {
     execSync('npm install', { stdio: 'inherit', cwd: __dirname });
     execSync('npx playwright install chromium', { stdio: 'inherit', cwd: __dirname });
-    console.log('Playwright installed successfully');
+    console.log('✅ Playwright installed successfully');
     return true;
   } catch (e) {
-    console.error('Failed to install Playwright:', e.message);
+    console.error('❌ Failed to install Playwright:', e.message);
     console.error('Please run manually: cd', __dirname, '&& npm run setup');
     return false;
   }
@@ -55,24 +82,24 @@ function getCodeToExecute() {
   // Case 1: File path provided
   if (args.length > 0 && fs.existsSync(args[0])) {
     const filePath = path.resolve(args[0]);
-    console.log(`Executing file: ${filePath}`);
+    console.log(`📄 Executing file: ${filePath}`);
     return fs.readFileSync(filePath, 'utf8');
   }
 
   // Case 2: Inline code provided as argument
   if (args.length > 0) {
-    console.log('Executing inline code');
+    console.log('⚡ Executing inline code');
     return args.join(' ');
   }
 
   // Case 3: Code from stdin
   if (!process.stdin.isTTY) {
-    console.log('Reading from stdin');
+    console.log('📥 Reading from stdin');
     return fs.readFileSync(0, 'utf8');
   }
 
   // No input
-  console.error('No code to execute');
+  console.error('❌ No code to execute');
   console.error('Usage:');
   console.error('  node run.js script.js          # Execute file');
   console.error('  node run.js "code here"        # Execute inline');
@@ -163,9 +190,10 @@ const fixtures = require('./lib/fixtures');
  * Main execution
  */
 async function main() {
-  console.log('Electron E2E Skill - Universal Executor\n');
+  console.log('🖥️  Electron E2E Skill - Universal Executor');
+  console.log(`📁 Skill directory: ${SKILL_DIR}\n`);
 
-  // Clean up old temp files from previous runs
+  // Clean up old temp files from previous runs (belt and suspenders)
   cleanupOldTempFiles();
 
   // Check Playwright installation
@@ -181,23 +209,22 @@ async function main() {
   const code = wrapCodeIfNeeded(rawCode);
 
   // Create temporary file for execution
-  const tempFile = path.join(__dirname, `.temp-execution-${Date.now()}.js`);
+  currentTempFile = path.join(__dirname, `.temp-execution-${Date.now()}.js`);
 
   try {
     // Write code to temp file
-    fs.writeFileSync(tempFile, code, 'utf8');
+    fs.writeFileSync(currentTempFile, code, 'utf8');
 
     // Execute the code
-    console.log('Starting Electron automation...\n');
-    require(tempFile);
+    console.log('🚀 Starting Electron automation...\n');
+    require(currentTempFile);
 
-    // Note: Temp file will be cleaned up on next run
-    // This allows long-running async operations to complete safely
+    // Temp file will be cleaned up on process exit via the exit handler
 
   } catch (error) {
-    console.error('Execution failed:', error.message);
+    console.error('❌ Execution failed:', error.message);
     if (error.stack) {
-      console.error('\nStack trace:');
+      console.error('\n📋 Stack trace:');
       console.error(error.stack);
     }
     process.exit(1);
@@ -206,6 +233,6 @@ async function main() {
 
 // Run main function
 main().catch(error => {
-  console.error('Fatal error:', error.message);
+  console.error('❌ Fatal error:', error.message);
   process.exit(1);
 });

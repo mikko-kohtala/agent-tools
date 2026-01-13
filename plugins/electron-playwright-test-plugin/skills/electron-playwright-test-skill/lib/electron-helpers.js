@@ -1,6 +1,29 @@
 /**
  * Electron E2E Helpers
  * Core utilities for launching and testing Electron applications
+ * @module electron-helpers
+ */
+
+/**
+ * @typedef {import('playwright').ElectronApplication} ElectronApplication
+ * @typedef {import('playwright').Page} Page
+ */
+
+/**
+ * @typedef {Object} LaunchOptions
+ * @property {string} [cwd] - Working directory (app path)
+ * @property {string} [executablePath] - Custom electron executable path
+ * @property {Object} [env] - Additional environment variables
+ * @property {number} [timeout] - Launch timeout in ms (default: 60000)
+ * @property {boolean} [recordVideo] - Record video to /tmp/e2e-videos
+ * @property {boolean} [skipDevServer] - Skip dev server check (default: false)
+ * @property {number} [slowMo] - Slow down operations by ms (default: from SLOW_MO env)
+ */
+
+/**
+ * @typedef {Object} WaitOptions
+ * @property {number} [timeout] - Max wait time in ms
+ * @property {string} [readySelector] - Selector to wait for (optional)
  */
 
 const { _electron: electron } = require('playwright');
@@ -9,9 +32,10 @@ const { spawn } = require('child_process');
 const net = require('net');
 
 /**
- * Default app path for multi-ai-app
+ * Default app path - uses environment variable or falls back to cwd
+ * Set ELECTRON_APP_PATH environment variable to override
  */
-const DEFAULT_APP_PATH = '/Users/mikko/code/multi-ai-app';
+const DEFAULT_APP_PATH = process.env.ELECTRON_APP_PATH || process.cwd();
 
 /**
  * Default Vite dev server port
@@ -48,15 +72,58 @@ async function isDevServerRunning(port = DEV_SERVER_PORT) {
   });
 }
 
+// Track spawned Vite process for cleanup
+let spawnedViteProcess = null;
+
 /**
- * Ensure dev server is running (check only - no auto-start)
- * Electron Forge dev server requires an interactive terminal, so we can't
- * auto-start it reliably. Instead, we give clear instructions.
- *
+ * Start Vite dev server directly (without electron-forge)
  * @param {string} appPath - Path to the app
+ * @returns {Promise<ChildProcess>}
+ */
+async function startViteServer(appPath) {
+  console.log('Starting Vite dev server...');
+
+  const viteProcess = spawn('npx', ['vite', '--config', 'vite.renderer.config.mts'], {
+    cwd: appPath,
+    stdio: ['ignore', 'pipe', 'pipe'],
+    detached: false
+  });
+
+  spawnedViteProcess = viteProcess;
+
+  // Wait for Vite to be ready (max 10s)
+  for (let i = 0; i < 10; i++) {
+    await new Promise(r => setTimeout(r, 1000));
+    if (await isDevServerRunning()) {
+      console.log('✓ Vite dev server started on port 5173');
+      return viteProcess;
+    }
+  }
+
+  // Kill if failed to start
+  viteProcess.kill();
+  spawnedViteProcess = null;
+  throw new Error('Failed to start Vite dev server within 10 seconds');
+}
+
+/**
+ * Stop the spawned Vite server if we started one
+ */
+function stopViteServer() {
+  if (spawnedViteProcess) {
+    console.log('Stopping Vite dev server...');
+    spawnedViteProcess.kill();
+    spawnedViteProcess = null;
+  }
+}
+
+/**
+ * Ensure dev server is running, auto-starting if needed
+ * @param {string} appPath - Path to the app
+ * @param {boolean} autoStart - Auto-start Vite if not running (default: true)
  * @returns {Promise<void>}
  */
-async function ensureDevServer(appPath) {
+async function ensureDevServer(appPath, autoStart = true) {
   // Quick initial check
   if (await isDevServerRunning()) {
     console.log('✓ Dev server running on port 5173');
@@ -65,14 +132,17 @@ async function ensureDevServer(appPath) {
 
   // Wait a bit in case it's just starting up
   console.log('Checking for dev server on port 5173...');
-  let retries = 5;
-  while (retries > 0) {
-    await new Promise(r => setTimeout(r, 1000));
-    if (await isDevServerRunning()) {
-      console.log('✓ Dev server is ready on port 5173');
-      return;
-    }
-    retries--;
+  await new Promise(r => setTimeout(r, 1000));
+
+  if (await isDevServerRunning()) {
+    console.log('✓ Dev server is ready on port 5173');
+    return;
+  }
+
+  // Auto-start Vite if enabled
+  if (autoStart) {
+    await startViteServer(appPath);
+    return;
   }
 
   // Not running - provide clear instructions
@@ -107,13 +177,7 @@ function getElectronPath(appPath) {
 
 /**
  * Launch Electron app with test configuration
- * @param {Object} options - Launch options
- * @param {string} options.cwd - Working directory (app path)
- * @param {string} options.executablePath - Custom electron executable path
- * @param {Object} options.env - Additional environment variables
- * @param {number} options.timeout - Launch timeout in ms (default: 60000)
- * @param {boolean} options.recordVideo - Record video to /tmp/e2e-videos
- * @param {boolean} options.skipDevServer - Skip dev server check (default: false)
+ * @param {LaunchOptions} [options] - Launch options
  * @returns {Promise<ElectronApplication>}
  */
 async function launchApp(options = {}) {
@@ -123,6 +187,9 @@ async function launchApp(options = {}) {
   if (!options.skipDevServer) {
     await ensureDevServer(appPath);
   }
+
+  // Support SLOW_MO environment variable for debugging
+  const slowMo = options.slowMo ?? (process.env.SLOW_MO ? parseInt(process.env.SLOW_MO) : 0);
 
   const launchOptions = {
     executablePath: options.executablePath || getElectronPath(appPath),
@@ -134,7 +201,8 @@ async function launchApp(options = {}) {
       ELECTRON_IS_E2E_TEST: '1',
       ...options.env
     },
-    timeout: options.timeout || 60000
+    timeout: options.timeout || 60000,
+    ...(slowMo > 0 && { slowMo })
   };
 
   if (options.recordVideo) {
@@ -154,9 +222,7 @@ async function launchApp(options = {}) {
 /**
  * Wait for app to be fully ready (window loaded + React hydrated)
  * @param {ElectronApplication} app - Electron application
- * @param {Object} options - Wait options
- * @param {number} options.timeout - Max wait time in ms
- * @param {string} options.readySelector - Selector to wait for (optional)
+ * @param {WaitOptions} [options] - Wait options
  * @returns {Promise<Page>}
  */
 async function waitForAppReady(app, options = {}) {
@@ -169,14 +235,18 @@ async function waitForAppReady(app, options = {}) {
   // Wait for load state
   await page.waitForLoadState('domcontentloaded', { timeout });
 
-  // Wait for React to hydrate - look for main app container
+  // Wait for React to hydrate - look for sidebar with data-testid
   try {
-    await page.waitForSelector('.flex.h-screen', { timeout: timeout / 2 });
+    await page.waitForSelector('[data-testid="sidebar"]', { timeout: timeout / 2 });
     console.log('App UI loaded');
   } catch (e) {
-    // Fallback: just wait a bit for React
-    console.log('Waiting for React to initialize...');
-    await page.waitForTimeout(2000);
+    // Fallback: try legacy selector for apps without data-testid
+    try {
+      await page.waitForSelector('.flex.h-screen', { timeout: 2000 });
+      console.log('App UI loaded (legacy selector)');
+    } catch (e2) {
+      console.log('Warning: Could not detect app ready state, proceeding anyway');
+    }
   }
 
   // If custom ready selector provided, wait for it
@@ -230,13 +300,20 @@ async function screenshot(page, name, options = {}) {
 }
 
 /**
- * Clean shutdown of the Electron app
+ * Clean shutdown of the Electron app (and Vite server if we started one)
  * @param {ElectronApplication} app - Electron application
+ * @param {Object} options - Close options
+ * @param {boolean} options.keepVite - Don't stop Vite server (default: false)
  */
-async function closeApp(app) {
+async function closeApp(app, options = {}) {
   console.log('Closing Electron app...');
   await app.close();
   console.log('App closed');
+
+  // Stop Vite server if we started it (unless keepVite is true)
+  if (!options.keepVite) {
+    stopViteServer();
+  }
 }
 
 /**
@@ -272,6 +349,8 @@ module.exports = {
   DEV_SERVER_PORT,
   getElectronPath,
   isDevServerRunning,
+  startViteServer,
+  stopViteServer,
   ensureDevServer,
   launchApp,
   waitForAppReady,
