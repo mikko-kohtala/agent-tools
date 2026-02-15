@@ -22,6 +22,7 @@ claude plugin install tmux-plugin
 claude plugin install windmill-plugin
 claude plugin install docx-plugin
 claude plugin install pptx-plugin
+claude plugin install code-simplifier-plugin
 ```
 
 ### Install Individual Plugins Directly
@@ -32,6 +33,7 @@ claude plugin install github:mikko-kohtala/agent-tools/plugins/tmux-plugin
 claude plugin install github:mikko-kohtala/agent-tools/plugins/windmill-plugin
 claude plugin install github:mikko-kohtala/agent-tools/plugins/docx-plugin
 claude plugin install github:mikko-kohtala/agent-tools/plugins/pptx-plugin
+claude plugin install github:mikko-kohtala/agent-tools/plugins/code-simplifier-plugin
 ```
 
 ## Plugins
@@ -46,6 +48,7 @@ claude plugin install github:mikko-kohtala/agent-tools/plugins/pptx-plugin
 | [codex-plugin](plugins/codex-plugin/)                         | codex-skill             | -        | -      | -     | [skills-directory](https://github.com/skills-directory/skill-codex) |
 | [docx-plugin](plugins/docx-plugin/)                           | docx-skill              | -        | -      | -     | [Anthropic](https://github.com/anthropics/skills)             |
 | [pptx-plugin](plugins/pptx-plugin/)                           | pptx-skill              | -        | -      | -     | [Anthropic](https://github.com/anthropics/skills)             |
+| [code-simplifier-plugin](plugins/code-simplifier-plugin/)     | code-simplifier-skill   | simplify | code-simplifier | -     | [Anthropic](https://github.com/anthropics/claude-plugins-official) |
 
 ## Reference Links
 

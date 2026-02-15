@@ -44,6 +44,7 @@ Each plugin follows Claude Code's plugin specification:
 | windmill-plugin | Windmill platform development assistance |
 | gemini-imagegen-plugin | Image generation via Gemini API |
 | skill-development-plugin | Guide for creating Claude Code skills |
+| code-simplifier-plugin | Simplifies and refines code for clarity and maintainability |
 
 ## Adding New Plugins
 
