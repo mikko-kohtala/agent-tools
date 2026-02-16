@@ -126,6 +126,17 @@
       },
       "category": "development",
       "keywords": ["claude-plugin", "code-simplifier", "refactoring", "code-quality"]
+    },
+    {
+      "name": "reverse-engineer-spec-plugin",
+      "source": "./plugins/reverse-engineer-spec-plugin",
+      "description": "Reverse engineer a detailed product and technical specification from a git branch's implementation.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Codex"
+      },
+      "category": "documentation",
+      "keywords": ["spec", "documentation", "git", "branch-analysis", "reverse-engineering"]
     }
   ]
 }
